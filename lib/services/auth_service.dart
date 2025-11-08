@@ -25,7 +25,7 @@ class AuthService {
 
       // 4️⃣ Send the token to your Laravel API endpoint
       final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/google-login'),
+        Uri.parse('${ApiConfig.baseUrl}/api/google-login'),
         headers: {'Accept': 'application/json'},
         body: {'id_token': googleAuth!.idToken}, // 👈 PUT HERE
       );
