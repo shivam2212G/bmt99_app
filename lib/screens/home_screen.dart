@@ -19,6 +19,7 @@ import '../services/category_service.dart';
 import '../services/feature_brand_service.dart';
 import '../services/less_in_stock_service.dart';
 import '../widget/bottom_navigation_bar.dart';
+import 'brand_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -503,115 +504,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Widget _buildFeaturedBrands() {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 20),
-  //     padding: const EdgeInsets.all(20),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(20),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.black.withOpacity(0.06),
-  //           blurRadius: 15,
-  //           offset: const Offset(0, 5),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Column(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(
-  //               "Featured Brands",
-  //               style: TextStyle(
-  //                 fontSize: 18,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Colors.grey.shade800,
-  //               ),
-  //             ),
-  //             Container(
-  //               padding: const EdgeInsets.symmetric(
-  //                 horizontal: 12,
-  //                 vertical: 6,
-  //               ),
-  //               decoration: BoxDecoration(
-  //                 color: Colors.blue.shade50,
-  //                 borderRadius: BorderRadius.circular(12),
-  //               ),
-  //               child: Text(
-  //                 "Premium",
-  //                 style: TextStyle(
-  //                   color: Colors.blue.shade700,
-  //                   fontSize: 12,
-  //                   fontWeight: FontWeight.bold,
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //
-  //         const SizedBox(height: 16),
-  //
-  //         loadingBrands
-  //             ? const Center(child: CircularProgressIndicator())
-  //             : GridView.builder(
-  //                 shrinkWrap: true,
-  //                 physics: const NeverScrollableScrollPhysics(),
-  //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //                   crossAxisCount: 3,
-  //                   childAspectRatio: 1.2,
-  //                   crossAxisSpacing: 15,
-  //                   mainAxisSpacing: 15,
-  //                 ),
-  //                 itemCount: brands.length,
-  //                 itemBuilder: (context, index) {
-  //                   final brand = brands[index];
-  //
-  //                   return Container(
-  //                     decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(15),
-  //                       color: Colors.grey.shade50,
-  //                       border: Border.all(color: Colors.grey.shade200),
-  //                     ),
-  //                     child: Column(
-  //                       mainAxisAlignment: MainAxisAlignment.center,
-  //                       children: [
-  //                         // BRAND IMAGE
-  //                         ClipRRect(
-  //                           borderRadius: BorderRadius.circular(10),
-  //                           child: Image.network(
-  //                             "${ApiConfig.baseUrl}/${brand.featureBrandImage}",
-  //                             height: 40,
-  //                             width: 40,
-  //                             fit: BoxFit.cover,
-  //                           ),
-  //                         ),
-  //
-  //                         const SizedBox(height: 8),
-  //
-  //                         // BRAND NAME
-  //                         Text(
-  //                           brand.featureBrandName,
-  //                           maxLines: 1,
-  //                           overflow: TextOverflow.ellipsis,
-  //                           style: TextStyle(
-  //                             fontSize: 12,
-  //                             fontWeight: FontWeight.w600,
-  //                             color: Colors.grey.shade700,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   );
-  //                 },
-  //               ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildFeaturedBrands() {
     // First 6
     final firstSix = brands.length > 6 ? brands.sublist(0, 6) : brands;
@@ -740,38 +632,51 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   Widget _brandCard(FeatureBrandModel brand) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.grey.shade50,
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              "${ApiConfig.baseUrl}/${brand.featureBrandImage}",
-              height: 40,
-              width: 40,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BrandProductsScreen(
+              brandId: brand.featureBrandId,
+              brandName: brand.featureBrandName,
+              brandImage: brand.featureBrandImage,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            brand.featureBrandName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade700,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.grey.shade50,
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                "${ApiConfig.baseUrl}/${brand.featureBrandImage}",
+                height: 40,
+                width: 40,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              brand.featureBrandName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
