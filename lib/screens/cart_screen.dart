@@ -238,3 +238,8 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 }
+
+//
+// make perfect ui, shimmer & add + - button to increase quantity  , and add more info & proffesional ui
+// and bottom show result & checkOut Button (Logic Comming soon)
+// tip : cart quantity not comes from backend
