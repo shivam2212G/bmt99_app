@@ -38,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
 
+
   Future<void> logout() async {
     await AuthService().signOut();
     if (!mounted) return;

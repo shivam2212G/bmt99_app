@@ -1284,7 +1284,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // Product Image
             Container(
-              width: 150,
+              width: 130,
               height: 130,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.horizontal(

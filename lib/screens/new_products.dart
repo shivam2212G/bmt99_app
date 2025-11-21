@@ -26,6 +26,8 @@ class NewProducts extends StatefulWidget {
 }
 
 class _NewProductsState extends State<NewProducts> {
+  String? name, email, avatar;
+
   int _currentIndex = 2;
 
   bool loadingProducts = true;
@@ -48,6 +50,7 @@ class _NewProductsState extends State<NewProducts> {
   void initState() {
     super.initState();
     _initData();
+    loadUserData();
   }
 
   Future<void> _initData() async {
@@ -66,6 +69,14 @@ class _NewProductsState extends State<NewProducts> {
     _categories = await CategoryService().fetchCategories();
     _brands = await FeatureBrandService().fetchFeatureBrands();
     setState(() {});
+  }
+  Future<void> loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name');
+      email = prefs.getString('email');
+      avatar = prefs.getString('avatar');
+    });
   }
 
   bool _hasActiveFilters() {
@@ -129,7 +140,7 @@ class _NewProductsState extends State<NewProducts> {
       case 4:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+          MaterialPageRoute(builder: (_) => ProfileScreen(name: name, email: email, avatar: avatar)),
         );
         break;
     }

@@ -24,6 +24,8 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  String? name, email, avatar;
+
   int _currentIndex = 1;
 
   List<CategoryModel> categories = [];
@@ -37,6 +39,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     loadCategories();
+    loadUserData();
   }
 
   Future<void> loadCategories() async {
@@ -60,6 +63,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     setState(() => productLoading = true);
     products = await ProductService().getProductsByCategory(categoryId);
     setState(() => productLoading = false);
+  }
+  Future<void> loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name');
+      email = prefs.getString('email');
+      avatar = prefs.getString('avatar');
+    });
   }
 
   void _onItemTapped(int index) {
@@ -87,7 +98,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       case 4:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+          MaterialPageRoute(builder: (_) => ProfileScreen( name: name, email: email, avatar: avatar)),
         );
         break;
     }
