@@ -104,6 +104,78 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
+  // Shimmer effect for categories list
+  Widget _buildCategoryShimmer() {
+    return SizedBox(
+      height: 90,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 110,
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(6),
+            child: Shimmer(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Shimmer effect for category header
+  Widget _buildCategoryHeaderShimmer() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // Image shimmer
+          Shimmer(
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey.shade300,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Title shimmer
+          Shimmer(
+            child: Container(
+              height: 24,
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: Colors.grey.shade300,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          // Description shimmer
+          Shimmer(
+            child: Container(
+              height: 16,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Colors.grey.shade300,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // Shimmer effect for products grid using shimmer_animation package
   Widget _buildProductGridShimmer() {
     return GridView.builder(
@@ -512,14 +584,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
         foregroundColor: Colors.white,
       ),
 
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView( // ← ADD THIS: Make the entire screen scrollable
+      body: SingleChildScrollView( // ← Make the entire screen scrollable
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             // TOP HORIZONTAL CATEGORY LIST
-            SizedBox(
+            loading
+                ? _buildCategoryShimmer()
+                : SizedBox(
               height: 90,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -565,7 +637,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
             const SizedBox(height: 10),
 
             // CATEGORY IMAGE + NAME + DESC
-            Padding(
+            loading
+                ? _buildCategoryHeaderShimmer()
+                : Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
@@ -645,7 +719,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${categories[selectedCatIndex].categoryName} Products 🛍️",
+                          "${loading ? "Loading" : categories[selectedCatIndex].categoryName} Products 🛍️",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -671,7 +745,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ],
                           ),
                           child: Text(
-                            "${products.length} Items",
+                            loading ? "0 Items" : "${products.length} Items",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -685,7 +759,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   const SizedBox(height: 20),
 
                   // PRODUCT GRID WITH SHIMMER
-                  productLoading
+                  (loading || productLoading)
                       ? _buildProductGridShimmer()
                       : GridView.builder(
                     shrinkWrap: true, // ← IMPORTANT: This allows grid to scroll inside SingleChildScrollView

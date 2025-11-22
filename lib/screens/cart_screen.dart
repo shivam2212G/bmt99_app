@@ -1,6 +1,7 @@
 import 'package:bmt99_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../services/cart_service.dart';
 import '../baseapi.dart';
@@ -139,40 +140,8 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Cart"),
-        backgroundColor: Colors.green.shade600,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-
-      body: Column(
-        children: [
-          Expanded(
-            child: loading
-                ? _buildShimmerLoader()
-                : cartItems.isEmpty
-                ? _buildEmptyCart()
-                : _buildCartList(),
-          ),
-
-          // Checkout Section
-          if (!loading && cartItems.isNotEmpty)
-            _buildCheckoutSection(),
-        ],
-      ),
-
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-
-  Widget _buildShimmerLoader() {
+  // Shimmer effect for cart items
+  Widget _buildCartItemShimmer() {
     return ListView.builder(
       padding: const EdgeInsets.all(12),
       itemCount: 4, // Show 4 shimmer items
@@ -193,13 +162,15 @@ class _CartScreenState extends State<CartScreen> {
           child: Row(
             children: [
               // Shimmer Image
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: const BorderRadius.horizontal(
-                    left: Radius.circular(12),
+              Shimmer(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: const BorderRadius.horizontal(
+                      left: Radius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -211,31 +182,64 @@ class _CartScreenState extends State<CartScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Shimmer Title
-                      Container(
-                        width: double.infinity,
-                        height: 16,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(4),
+                      Shimmer(
+                        child: Container(
+                          width: double.infinity,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Container(
-                        width: 120,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(4),
+                      Shimmer(
+                        child: Container(
+                          width: 120,
+                          height: 14,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Container(
-                        width: 80,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(4),
+                      Shimmer(
+                        child: Container(
+                          width: 80,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Quantity controls shimmer
+                      Row(
+                        children: [
+                          Shimmer(
+                            child: Container(
+                              width: 60,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Shimmer(
+                            child: Container(
+                              width: 100,
+                              height: 29,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -243,19 +247,91 @@ class _CartScreenState extends State<CartScreen> {
               ),
 
               // Shimmer Delete Button
-              Container(
-                width: 28,
-                height: 28,
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  shape: BoxShape.circle,
+              Shimmer(
+                child: Container(
+                  width: 28,
+                  height: 28,
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  // Shimmer effect for checkout section
+  Widget _buildCheckoutSectionShimmer() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Price breakdown shimmer
+          for (int i = 0; i < 4; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Shimmer(
+                    child: Container(
+                      width: 100,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                  Shimmer(
+                    child: Container(
+                      width: 60,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          const SizedBox(height: 16),
+
+          // Checkout button shimmer
+          Shimmer(
+            child: Container(
+              width: double.infinity,
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -595,6 +671,41 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My Cart"),
+        backgroundColor: Colors.green.shade600,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+
+      body: Column(
+        children: [
+          Expanded(
+            child: loading
+                ? _buildCartItemShimmer() // Use shimmer instead of loader
+                : cartItems.isEmpty
+                ? _buildEmptyCart()
+                : _buildCartList(),
+          ),
+
+          // Checkout Section
+          if (loading && cartItems.isNotEmpty)
+            _buildCheckoutSectionShimmer()
+          else if (!loading && cartItems.isNotEmpty)
+            _buildCheckoutSection(),
+        ],
+      ),
+
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

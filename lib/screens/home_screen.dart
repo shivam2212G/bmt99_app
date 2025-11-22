@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../baseapi.dart';
 import '../model/category_model.dart';
 import '../model/product_model.dart';
@@ -44,15 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<FeatureBrandModel> brands = [];
   bool loadingBrands = true;
-
-  final List<Map<String, dynamic>> _featuredBrands = [
-    {'name': 'Nike', 'icon': Icons.sports_basketball, 'color': Colors.black},
-    {'name': 'Adidas', 'icon': Icons.directions_run, 'color': Colors.blue},
-    {'name': 'Puma', 'icon': Icons.sports_baseball, 'color': Colors.orange},
-    {'name': 'Apple', 'icon': Icons.phone_iphone, 'color': Colors.grey},
-    {'name': 'Samsung', 'icon': Icons.tv, 'color': Colors.blue},
-    {'name': 'Sony', 'icon': Icons.headset, 'color': Colors.black},
-  ];
 
   final List<Map<String, dynamic>> _quickActions = [
     {'icon': Icons.local_offer, 'label': 'Deals', 'color': Colors.orange},
@@ -149,47 +141,633 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Shimmer for search bar
+  Widget _buildSearchBarShimmer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Shimmer(
+        child: Container(
+          height: 20,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Shimmer for hero carousel
+  Widget _buildHeroCarouselShimmer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      height: 220,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: Colors.grey.shade200,
+      ),
+      child: Shimmer(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.grey.shade300,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Shimmer for quick actions
+  Widget _buildQuickActionsShimmer() {
+    return SizedBox(
+      height: 90,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 80,
+            margin: const EdgeInsets.only(right: 12),
+            child: Column(
+              children: [
+                Shimmer(
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Shimmer(
+                  child: Container(
+                    width: 40,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Shimmer for categories section
+  Widget _buildCategoriesSectionShimmer() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Shimmer(
+                  child: Container(
+                    width: 100,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                ),
+                Shimmer(
+                  child: Container(
+                    width: 80,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+              padding: const EdgeInsets.only(left: 20),
+              scrollDirection: Axis.horizontal,
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: 90,
+                  margin: const EdgeInsets.only(right: 15),
+                  child: Column(
+                    children: [
+                      Shimmer(
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Shimmer(
+                        child: Container(
+                          width: 60,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Shimmer for featured brands
+  Widget _buildFeaturedBrandsShimmer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Shimmer(
+                child: Container(
+                  width: 120,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              ),
+              Shimmer(
+                child: Container(
+                  width: 60,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1.2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+            ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return Shimmer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Shimmer for product grid
+  Widget _buildProductGridShimmer() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.75,
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 15,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 15,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image shimmer
+              Shimmer(
+                child: Container(
+                  height: 140,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Shimmer(
+                            child: Container(
+                              height: 14,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Shimmer(
+                            child: Container(
+                              height: 12,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Shimmer(
+                            child: Container(
+                              height: 16,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Shimmer(
+                            child: Container(
+                              height: 36,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Shimmer for product list
+  Widget _buildProductListShimmer() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 15),
+          height: 130,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Shimmer(
+                child: Container(
+                  width: 130,
+                  height: 130,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(20),
+                    ),
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Shimmer(
+                        child: Container(
+                          height: 14,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
+                      Shimmer(
+                        child: Container(
+                          height: 16,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
+                      Shimmer(
+                        child: Container(
+                          height: 18,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
+                      Shimmer(
+                        child: Container(
+                          height: 32,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Full page shimmer
+  Widget _buildFullPageShimmer() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          // Search Bar Shimmer
+          _buildSearchBarShimmer(),
+          const SizedBox(height: 16),
+
+          // Hero Carousel Shimmer
+          _buildHeroCarouselShimmer(),
+          const SizedBox(height: 24),
+
+          // Quick Actions Shimmer
+          _buildQuickActionsShimmer(),
+          const SizedBox(height: 24),
+
+          // Categories Section Shimmer
+          _buildCategoriesSectionShimmer(),
+          const SizedBox(height: 24),
+
+          // Featured Brands Shimmer
+          _buildFeaturedBrandsShimmer(),
+          const SizedBox(height: 24),
+
+          // Best Offers Section Shimmer
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Shimmer(
+                        child: Container(
+                          width: 100,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                      Shimmer(
+                        child: Container(
+                          width: 70,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildProductGridShimmer(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Less in Stock Section Shimmer
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Shimmer(
+                        child: Container(
+                          width: 100,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                      Shimmer(
+                        child: Container(
+                          width: 70,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildProductListShimmer(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: _buildAppBar(),
       body: loading
-          ? _buildLoadingScreen()
+          ? _buildFullPageShimmer()
           : SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  // ---------- SEARCH BAR ----------
-                  _buildSearchBar(),
-                  const SizedBox(height: 16),
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            // ---------- SEARCH BAR ----------
+            _buildSearchBar(),
+            const SizedBox(height: 16),
 
-                  // ---------- HERO CAROUSEL ----------
-                  _buildHeroCarousel(),
-                  const SizedBox(height: 24),
+            // ---------- HERO CAROUSEL ----------
+            _buildHeroCarousel(),
+            const SizedBox(height: 24),
 
-                  // ---------- QUICK ACTIONS ----------
-                  _buildQuickActions(),
-                  const SizedBox(height: 24),
+            // ---------- QUICK ACTIONS ----------
+            _buildQuickActions(),
+            const SizedBox(height: 24),
 
-                  // ---------- CATEGORIES SECTION ----------
-                  _buildCategoriesSection(),
-                  const SizedBox(height: 24),
+            // ---------- CATEGORIES SECTION ----------
+            _buildCategoriesSection(),
+            const SizedBox(height: 24),
 
-                  // ---------- FEATURED BRANDS ----------
-                  _buildFeaturedBrands(),
-                  const SizedBox(height: 24),
+            // ---------- FEATURED BRANDS ----------
+            _buildFeaturedBrands(),
+            const SizedBox(height: 24),
 
-                  // ---------- BEST OFFERS SECTION ----------
-                  _buildBestOffersSection(),
-                  const SizedBox(height: 24),
+            // ---------- BEST OFFERS SECTION ----------
+            _buildBestOffersSection(),
+            const SizedBox(height: 24),
 
-                  // ---------- LESS IN STOCK SECTION ----------
-                  _buildLessInStockSection(),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
+            // ---------- LESS IN STOCK SECTION ----------
+            _buildLessInStockSection(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
@@ -327,64 +905,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildLoadingScreen() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.green.shade400, Colors.green.shade700],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.green.shade300,
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.shopping_bag_rounded,
-              size: 50,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 25),
-          Text(
-            "Loading Amazing Deals...",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey.shade700,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "Getting everything ready for you",
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
-          ),
-          const SizedBox(height: 25),
-          SizedBox(
-            width: 200,
-            child: LinearProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green.shade700),
-              backgroundColor: Colors.green.shade100,
-              borderRadius: BorderRadius.circular(10),
-              minHeight: 8,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -565,8 +1085,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ---------- LOADING ----------
           loadingBrands
-              ? const Center(child: CircularProgressIndicator())
-
+              ? GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1.2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+            ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return Shimmer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+              );
+            },
+          )
               : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -586,7 +1125,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: firstSix.length,
                 itemBuilder: (context, index) {
                   final brand = firstSix[index];
-
                   return _brandCard(brand);
                 },
               ),
@@ -616,7 +1154,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     separatorBuilder: (c, i) => const SizedBox(width: 12),
                     itemBuilder: (context, index) {
                       final brand = moreBrands[index];
-
                       return SizedBox(
                         width: 90,
                         child: _brandCard(brand),
@@ -749,16 +1286,16 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 120,
             child: categories.isEmpty
-                ? _buildCategoryShimmer()
+                ? _buildCategoriesSectionShimmer()
                 : ListView.builder(
-                    padding: const EdgeInsets.only(left: 20),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length > 8 ? 8 : categories.length,
-                    itemBuilder: (context, index) {
-                      final cat = categories[index];
-                      return _buildCategoryItem(cat);
-                    },
-                  ),
+              padding: const EdgeInsets.only(left: 20),
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length > 8 ? 8 : categories.length,
+              itemBuilder: (context, index) {
+                final cat = categories[index];
+                return _buildCategoryItem(cat);
+              },
+            ),
           ),
         ],
       ),
@@ -921,21 +1458,21 @@ class _HomeScreenState extends State<HomeScreen> {
           loadingOffers
               ? _buildProductGridShimmer()
               : GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.75,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: bestOffers.length,
-                  itemBuilder: (context, index) {
-                    final product = bestOffers[index];
-                    return _buildProductCard(product);
-                  },
-                ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: bestOffers.length,
+            itemBuilder: (context, index) {
+              final product = bestOffers[index];
+              return _buildProductCard(product);
+            },
+          ),
         ],
       ),
     );
@@ -1242,15 +1779,15 @@ class _HomeScreenState extends State<HomeScreen> {
           loadingLessStock
               ? _buildProductListShimmer()
               : ListView.builder(
-                  itemCount: lessStockProducts.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemBuilder: (context, index) {
-                    final product = lessStockProducts[index];
-                    return _buildLowStockProductCard(product);
-                  },
-                ),
+            itemCount: lessStockProducts.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemBuilder: (context, index) {
+              final product = lessStockProducts[index];
+              return _buildLowStockProductCard(product);
+            },
+          ),
         ],
       ),
     );
@@ -1529,83 +2066,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
-  }
-
-  // Shimmer Loaders
-  Widget _buildCategoryShimmer() {
-    return ListView.builder(
-      padding: const EdgeInsets.only(left: 20),
-      scrollDirection: Axis.horizontal,
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        return Container(
-          width: 90,
-          margin: const EdgeInsets.only(right: 15),
-          child: Column(
-            children: [
-              Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                width: 60,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildProductGridShimmer() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: 4,
-      itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildProductListShimmer() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 15),
-          height: 120,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        );
-      },
-    );
   }
 }

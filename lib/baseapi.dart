@@ -1,4 +1,4 @@
 class ApiConfig {
   // Change this to your Laravel backend URL
-  static const String baseUrl = "https://719b6b448439.ngrok-free.app";
+  static const String baseUrl = "https://344df04b0a02.ngrok-free.app";
 }
