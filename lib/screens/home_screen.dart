@@ -19,6 +19,7 @@ import '../services/cart_service.dart';
 import '../services/category_service.dart';
 import '../services/feature_brand_service.dart';
 import '../services/less_in_stock_service.dart';
+import '../widget/MainNavigation.dart';
 import '../widget/bottom_navigation_bar.dart';
 import 'brand_products_screen.dart';
 
@@ -97,48 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> loadLessInStock() async {
     lessStockProducts = await LessInStockService().fetchLessInStock();
     setState(() => loadingLessStock = false);
-  }
-
-  void _onItemTapped(int index) {
-    if (index == _currentIndex) return;
-
-    setState(() => _currentIndex = index);
-
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CategoryScreen()),
-        );
-        break;
-      case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const NewProducts()),
-        );
-        break;
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CartScreen()),
-        );
-        break;
-      case 4:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) =>
-                ProfileScreen(name: name, email: email, avatar: avatar),
-          ),
-        );
-        break;
-    }
   }
 
   // Shimmer for search bar
@@ -768,10 +727,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 
@@ -1260,7 +1215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const CategoryScreen(),
+                          builder: (_) => const MainNavigation(initialIndex: 1),
                         ),
                       );
                     },

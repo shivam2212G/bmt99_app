@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../widget/MainNavigation.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,9 +53,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     setState(() => loading = false);
 
     if (success) {
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (_) => const HomeScreen()),
+      // );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const MainNavigation()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -26,8 +26,6 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   String? name, email, avatar;
 
-  int _currentIndex = 1;
-
   List<CategoryModel> categories = [];
   List<ProductModel> products = [];
 
@@ -71,37 +69,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
       email = prefs.getString('email');
       avatar = prefs.getString('avatar');
     });
-  }
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-        break;
-      case 1:
-        break;
-      case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const NewProducts()),
-        );
-        break;
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CartScreen()),
-        );
-        break;
-      case 4:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => ProfileScreen( name: name, email: email, avatar: avatar)),
-        );
-        break;
-    }
   }
 
   // Shimmer effect for categories list
@@ -784,10 +751,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       ),
 
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 }

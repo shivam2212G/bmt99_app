@@ -115,36 +115,6 @@ class _NewProductsState extends State<NewProducts> {
     setState(() => loadingProducts = false);
   }
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CategoryScreen()),
-        );
-        break;
-      case 2:
-        break;
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CartScreen()),
-        );
-        break;
-      case 4:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => ProfileScreen(name: name, email: email, avatar: avatar)),
-        );
-        break;
-    }
-  }
 
   // Shimmer effect for products grid
   Widget _buildProductGridShimmer() {
@@ -905,11 +875,6 @@ class _NewProductsState extends State<NewProducts> {
             const SizedBox(height: 30),
           ],
         ),
-      ),
-
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

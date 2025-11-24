@@ -55,29 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
-        break;
-      case 1:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const CategoryScreen()));
-        break;
-      case 2:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const NewProducts()));
-        break;
-      case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const CartScreen()));
-        break;
-      case 4:
-        break;
-    }
-  }
-
   Future<void> logout() async {
     showDialog(
       context: context,
@@ -474,11 +451,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 20),
           ],
         ),
-      ),
-
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

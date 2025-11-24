@@ -1,4 +1,5 @@
 import 'package:bmt99_app/screens/profile_screen.dart';
+import 'package:bmt99_app/widget/MainNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -16,10 +17,10 @@ class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  CartScreenState createState() => CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class CartScreenState extends State<CartScreen> {
   String? name, email, avatar;
 
   int _currentIndex = 3;
@@ -115,29 +116,6 @@ class _CartScreenState extends State<CartScreen> {
 
   double getTotalDiscount() {
     return getTotalMrp() - getTotalPrice();
-  }
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()));
-        break;
-      case 1:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const CategoryScreen()));
-        break;
-      case 2:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const NewProducts()));
-        break;
-      case 3:
-        break;
-      case 4:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => ProfileScreen(name: name, email: email, avatar: avatar)));
-        break;
-    }
   }
 
   // Shimmer effect for cart items
@@ -359,8 +337,8 @@ class _CartScreenState extends State<CartScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const HomeScreen()));
-            },
+                  MaterialPageRoute(builder: (_) => const MainNavigation(initialIndex: 0,)));
+              },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green.shade600,
               foregroundColor: Colors.white,
@@ -703,10 +681,6 @@ class _CartScreenState extends State<CartScreen> {
         ],
       ),
 
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 }
