@@ -861,7 +861,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.orange.shade400, Colors.red.shade400],
+                              colors: [Colors.green.shade400, Colors.blue.shade400],
                             ),
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: [

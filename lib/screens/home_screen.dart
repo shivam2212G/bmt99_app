@@ -732,6 +732,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
+      automaticallyImplyLeading: false,   //
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -657,6 +657,7 @@ class CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,   //
         title: const Text("My Cart"),
         backgroundColor: Colors.green.shade600,
         foregroundColor: Colors.white,
