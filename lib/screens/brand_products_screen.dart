@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import '../services/brand_product_service.dart';
 import '../model/product_model.dart';
 import '../baseapi.dart';
@@ -41,9 +44,177 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.brandName),
-        backgroundColor: Colors.green,
+        // automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            // Logo/Icon with gradient
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white, Colors.green.shade100],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.business_rounded,
+                color: Colors.green,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+
+            // Title with improved styling
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: widget.brandName.toUpperCase(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20,
+                            color: Colors.white,
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Text(
+                        "Brand products",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white.withOpacity(0.85),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      TweenAnimationBuilder(
+                        duration: const Duration(milliseconds: 500),
+                        tween: Tween<double>(begin: 0, end: 1),
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: 1 + 0.1 * math.sin(value * 2 * math.pi),
+                            child: child,
+                          );
+                        },
+                        child: const Text(
+                          "🏷️",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green.shade600, Colors.green.shade800],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+        ),
+        toolbarHeight: 80,
+        actions: [
+          // Notification icon with improved badge
+          Stack(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  icon: const Icon(Iconsax.notification, size: 22),
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade400,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.green.shade800, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.red.shade400.withOpacity(0.3),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      '2',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 12),
+
+          // Search icon
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: const Icon(
+              Icons.search_rounded,
+              size: 20,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())

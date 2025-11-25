@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:bmt99_app/model/feature_brand_model.dart';
 import 'package:bmt99_app/screens/category_screen.dart';
 import 'package:bmt99_app/screens/new_products.dart';
@@ -697,9 +699,7 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            // ---------- SEARCH BAR ----------
-            _buildSearchBar(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
 
             // ---------- HERO CAROUSEL ----------
             _buildHeroCarousel(),
@@ -732,24 +732,93 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      automaticallyImplyLeading: false,   //
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      automaticallyImplyLeading: false,
+      title: Row(
         children: [
-          const Text(
-            "BMT 99",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: Colors.white,
+          // Logo/Icon with gradient
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.white, Colors.green.shade100],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.shopping_cart,
+              color: Colors.green,
+              size: 24,
             ),
           ),
-          Text(
-            "Hello, ${name ?? 'Guest'} 👋",
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.white70,
-              fontWeight: FontWeight.normal,
+          const SizedBox(width: 12),
+
+          // Title and subtitle with improved styling
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "BMT ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20,
+                          color: Colors.white,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "99",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 20,
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text(
+                      "Hello, ${name ?? 'Guest'}",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withOpacity(0.85),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    TweenAnimationBuilder(
+                      duration: const Duration(milliseconds: 500),
+                      tween: Tween<double>(begin: 0, end: 1),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: 1 + 0.1 * math.sin(value * 2 * math.pi),
+                          child: child,
+                        );
+                      },
+                      child: const Text(
+                        "👋",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
@@ -757,62 +826,82 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.green.shade700,
       foregroundColor: Colors.white,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
-      ),
+      // shape: const RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+      // ),
+      toolbarHeight: 80,
       actions: [
-        IconButton(
-          icon: Badge(
-            backgroundColor: Colors.red.shade500,
-            label: const Text(
-              '3',
-              style: TextStyle(color: Colors.white, fontSize: 10),
-            ),
-            child: const Icon(Iconsax.notification, size: 24),
-          ),
-          onPressed: () {},
-        ),
-        const SizedBox(width: 8),
-      ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(Iconsax.search_normal, color: Colors.grey.shade600, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search products...",
-                hintStyle: TextStyle(color: Colors.grey.shade500),
-                border: InputBorder.none,
-                isDense: true,
+        // Notification icon with improved badge
+        Stack(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                icon: const Icon(Iconsax.notification, size: 22),
+                onPressed: () {},
+                padding: EdgeInsets.zero,
               ),
             ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: Colors.red.shade400,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.green.shade700, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.red.shade400.withOpacity(0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    '3',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(width: 12),
+
+        // User avatar/icon
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1,
+            ),
           ),
-          Container(width: 1, height: 20, color: Colors.grey.shade300),
-          IconButton(
-            icon: Icon(Iconsax.filter, color: Colors.green.shade700, size: 20),
-            onPressed: () {},
+          child: const Icon(
+            Icons.person_outline,
+            size: 20,
+            color: Colors.white,
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 16),
+      ],
     );
   }
 
