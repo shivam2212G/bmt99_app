@@ -6,6 +6,7 @@ class CartService {
   Future<Map<String, dynamic>> addToCart({
     required int userId,
     required int productId,
+    int quantity = 1
   }) async {
     final url = Uri.parse("${ApiConfig.baseUrl}/api/cart/add");
 
@@ -17,6 +18,7 @@ class CartService {
       body: {
         "user_id": userId.toString(),
         "product_id": productId.toString(),
+        'quantity': quantity.toString(),
       },
     );
 

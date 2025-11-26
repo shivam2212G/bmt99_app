@@ -26,7 +26,6 @@ class CartScreen extends StatefulWidget {
 class CartScreenState extends State<CartScreen> {
   String? name, email, avatar;
 
-  int _currentIndex = 3;
   bool loading = true;
 
   List<dynamic> cartItems = [];
@@ -58,7 +57,7 @@ class CartScreenState extends State<CartScreen> {
       // Initialize quantities (assuming backend doesn't provide quantity)
       for (var item in cartItems) {
         final cartId = item["cart_id"];
-        itemQuantities[cartId] = itemQuantities[cartId] ?? 1;
+        itemQuantities[cartId] = item["quantity"] ?? 1;   // ⭐ load correct quantity
       }
 
       loading = false;

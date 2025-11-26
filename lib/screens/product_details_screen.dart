@@ -61,6 +61,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       final response = await CartService().addToCart(
         userId: userId,
         productId: p.productId,
+        quantity: quantity,          // ⭐ IMPORTANT LINE
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
