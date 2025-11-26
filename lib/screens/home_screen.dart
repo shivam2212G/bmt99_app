@@ -51,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Map<String, dynamic>> _quickActions = [
     {'icon': Icons.local_offer, 'label': 'Deals', 'color': Colors.orange},
-    {'icon': Icons.local_fire_department, 'label': 'Hot', 'color': Colors.cyan},
     {'icon': Icons.star, 'label': 'Featured', 'color': Colors.amber},
     {'icon': Icons.flash_on, 'label': 'Flash Sale', 'color': Colors.red},
     {'icon': Icons.card_giftcard, 'label': 'Gifts', 'color': Colors.purple},
