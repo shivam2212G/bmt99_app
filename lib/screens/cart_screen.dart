@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:bmt99_app/screens/profile_screen.dart';
 import 'package:bmt99_app/widget/MainNavigation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -37,6 +39,145 @@ class CartScreenState extends State<CartScreen> {
     super.initState();
     loadCart();
     loadUserData();
+  }
+
+
+  void showOrderConfirmSheet() async {
+    final prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt("user_id");
+    String? savedAddress = prefs.getString("address") ?? "No address saved";
+
+    int paymentMethod = 0; // default COD
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  const Text("Delivery Address",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+                  const SizedBox(height: 8),
+                  Text(savedAddress),
+
+                  const SizedBox(height: 16),
+                  const Divider(),
+
+                  const Text("Payment Method",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+                  Row(
+                    children: [
+                      Radio(
+                        value: 0,
+                        groupValue: paymentMethod,
+                        onChanged: (val) {
+                          setState(() => paymentMethod = val!);
+                        },
+                      ),
+                      const Text("Cash on Delivery"),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Radio(
+                        value: 1,
+                        groupValue: paymentMethod,
+                        onChanged: (val) {
+                          setState(() => paymentMethod = val!);
+                        },
+                      ),
+                      const Text("Online Payment (Coming Soon)"),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        await placeOrderAPI(
+                          userId!,
+                          paymentMethod,
+                          savedAddress,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text("Confirm Order"),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> placeOrderAPI(int userId, int paymentMethod, String address) async {
+    final url = Uri.parse("${ApiConfig.baseUrl}/api/place-order");
+
+    final response = await http.post(
+      url,
+      headers: {
+        "Accept": "application/json",
+      },
+      body: {
+        "user_id": userId.toString(),
+        "payment_method": paymentMethod.toString(),
+        "address": address,
+      },
+    );
+
+    print("ORDER API: ${response.body}");
+
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Order Placed Successfully")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${response.body}")),
+      );
+    }
+  }
+
+
+  Future<void> updateAllCartBeforeOrder() async {
+    final prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt("user_id");
+    if (userId == null) return;
+
+    List<Map<String, dynamic>> items = [];
+
+    itemQuantities.forEach((cartId, qty) {
+      items.add({
+        "cart_id": cartId,
+        "quantity": qty,
+      });
+    });
+
+    await CartService().updateAllCartItems(userId, items);
   }
 
   Future<void> loadCart() async {
@@ -599,11 +740,12 @@ class CartScreenState extends State<CartScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                // TODO: Implement checkout logic
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Checkout functionality coming soon!")),
-                );
+              onPressed: () async {
+                await updateAllCartBeforeOrder();
+
+                // 🔥 Now call placeOrder API
+                showOrderConfirmSheet();          // open popup
+
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green.shade600,

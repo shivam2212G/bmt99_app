@@ -50,4 +50,20 @@ class CartService {
     return response.statusCode == 200;
   }
 
+  Future<bool> updateAllCartItems(int userId, List<Map<String, dynamic>> items) async {
+    final url = Uri.parse("${ApiConfig.baseUrl}/api/cart/update-all");
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user_id": userId,
+        "items": items
+      }),
+    );
+
+    return response.statusCode == 200;
+  }
+
+
 }

@@ -1,10 +1,15 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:bmt99_app/screens/wishlist_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../baseapi.dart';
 import '../services/auth_service.dart';
+import '../services/wishlist_service.dart';
 import '../widget/bottom_navigation_bar.dart';
 import 'cart_screen.dart';
 import 'category_screen.dart';
@@ -39,10 +44,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? address;
   bool isLoading = true;
 
+  List<dynamic> wishlistItems = [];
+  bool loading = true;
+
   @override
   void initState() {
     super.initState();
     loadUserData();
+    loadWishlist();
+  }
+
+  Future<String?> fetchPrivacyPolicy() async {
+    final url = Uri.parse("${ApiConfig.baseUrl}/api/settings");
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data["privacy_policy"];
+      } else {
+        return "Unable to load privacy policy.";
+      }
+    } catch (e) {
+      return "Error loading privacy policy.";
+    }
+  }
+
+  void showPrivacyPolicyDialog(String policyText) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            height: 450,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Privacy Policy",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Scrollable Text
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      policyText,
+                      style: const TextStyle(fontSize: 14, height: 1.4),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // OK Button (Small)
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 90,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text("OK"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  Future<void> loadWishlist() async {
+    final prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt("user_id");
+
+    if (userId == null) {
+      setState(() => loading = false);
+      return;
+    }
+
+    final data = await WishlistService().getWishlist(userId);
+
+    setState(() {
+      wishlistItems = data;
+      loading = false;
+    });
   }
 
   Future<void> loadUserData() async {
@@ -459,7 +565,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(width: 12),
                 _buildStatCard(
                   title: "Wishlist",
-                  value: "5",
+                  value: wishlistItems.length.toString(),
                   icon: Icons.favorite,
                   color: Colors.red,
                 ),
@@ -525,14 +631,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     subtitle: 'Your saved items',
                     color: Colors.red,
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('Favorites feature coming soon!'),
-                          backgroundColor: Colors.red.shade600,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const WishlistScreen(),
                         ),
                       );
                     },
@@ -571,6 +673,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       );
+                    },
+                  ),
+                  _buildListTile(
+                    icon: Icons.privacy_tip_rounded,
+                    title: 'Privacy Policy',
+                    subtitle: 'App preferences',
+                    color: Colors.deepOrange,
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+
+                      String? policy = await fetchPrivacyPolicy();
+
+                      Navigator.pop(context); // close loader
+
+                      showPrivacyPolicyDialog(policy ?? "No content available.");
                     },
                   ),
                 ],
@@ -839,3 +962,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+

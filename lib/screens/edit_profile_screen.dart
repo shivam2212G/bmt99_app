@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../baseapi.dart';
@@ -134,7 +136,79 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  Future<void> getCurrentAddress() async {
+    try {
+      print("📍 Getting location...");
 
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        print("❌ Location services disabled");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please enable location services.")),
+        );
+        return;
+      }
+
+      // Permission check
+      LocationPermission permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print("❌ Permission denied");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Location permission denied")),
+          );
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        print("❌ Permission denied forever");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Location permission permanently denied. Enable it from Settings."),
+          ),
+        );
+        return;
+      }
+
+      // Fetch actual location
+      print("⏳ Fetching GPS...");
+      Position pos = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      print("✔ Got location: ${pos.latitude}, ${pos.longitude}");
+
+      // Convert coordinates to address
+      print("⏳ Converting to address...");
+      List<Placemark> placemarks =
+      await placemarkFromCoordinates(pos.latitude, pos.longitude);
+
+      if (placemarks.isNotEmpty) {
+        final p = placemarks.first;
+
+        final fullAddress =
+            "${p.street}, ${p.subLocality}, ${p.locality}, ${p.administrativeArea}, ${p.postalCode}";
+
+        print("🏠 Address = $fullAddress");
+
+        setState(() {
+          addressCtrl.text = fullAddress;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Address updated!")),
+        );
+      }
+    } catch (e) {
+      print("🔥 ERROR: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
 
 
   @override
@@ -322,12 +396,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               const SizedBox(height: 15),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: () {
+                    print("📌 Use current location button tapped!");
+                    getCurrentAddress();
+                  },
+                  icon: const Icon(Icons.my_location, color: Colors.green),
+                  label: const Text(
+                    "Use Current Location",
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+              ),
 
               // ------------------ Address ------------------
               TextFormField(
                 controller: addressCtrl,
                 minLines: 2,
                 maxLines: 4,
+                readOnly: true,                    // ⛔ Disable keyboard
+                showCursor: false,                 // Hide blinking cursor
+                enableInteractiveSelection: false, // Disable pasting/selecting
                 decoration: const InputDecoration(
                   labelText: "Address",
                   border: OutlineInputBorder(),
