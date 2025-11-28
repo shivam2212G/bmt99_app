@@ -11,8 +11,10 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../services/cart_service.dart';
 import '../baseapi.dart';
+import '../services/payment_service.dart';
 import '../widget/bottom_navigation_bar.dart';
 import '../model/product_model.dart';
+import 'order_success_screen.dart';
 import 'product_details_screen.dart';
 import 'category_screen.dart';
 import 'home_screen.dart';
@@ -34,96 +36,157 @@ class CartScreenState extends State<CartScreen> {
   int count = 0;
   Map<int, int> itemQuantities = {}; // Track quantities locally
 
+  String selectedAddress = "";   // ⭐ FIX HERE
+  String selectedPhone = "";   // ⭐ FIX HERE
+
+  late PaymentService paymentService;
+
   @override
   void initState() {
     super.initState();
+    paymentService = PaymentService(
+      onPaymentSuccess: _onPaymentSuccess,
+      onPaymentFailed: _onPaymentFailed,
+    );
     loadCart();
     loadUserData();
   }
 
+  @override
+  void dispose() {
+    paymentService.dispose();
+    super.dispose();
+  }
 
-  void showOrderConfirmSheet() async {
+  // 🎉 PAYMENT SUCCESS
+  void _onPaymentSuccess(String paymentId) async {
+    print("PAYMENT SUCCESS: $paymentId");
+
+    await placeOrder(
+      paymentMethod: 1, // Online Payment
+      transactionId: paymentId,
+      paidAmount: getTotalPrice().toInt(),
+    );
+  }
+
+// ❌ PAYMENT FAILED
+  void _onPaymentFailed(String? message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Payment Failed: $message")),
+    );
+  }
+
+  Future<void> placeOrder({
+    required int paymentMethod, // 0 = COD, 1 = Online
+    String? transactionId,
+    int? paidAmount,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
-    int? userId = prefs.getInt("user_id");
-    String? savedAddress = prefs.getString("address") ?? "No address saved";
+    final userId = prefs.getInt("user_id");
 
-    int paymentMethod = 0; // default COD
+    final url = Uri.parse("${ApiConfig.baseUrl}/api/place-order");
+
+    final body = {
+      "user_id": userId.toString(),
+      "payment_method": paymentMethod.toString(),
+      "address": selectedAddress,  // From popup
+      "phone": selectedPhone
+    };
+
+    if (paymentMethod == 1) {
+      body["transaction_id"] = transactionId!;
+      body["paid_amount"] = paidAmount.toString();
+    }
+
+    print("ORDER REQ: $body");
+
+    final response = await http.post(url, body: body);
+    print("ORDER RES: ${response.body}");
+
+    if (response.statusCode == 201) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => OrderSuccessScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Order failed")),
+      );
+    }
+  }
+
+  void showPaymentDialog() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedAddress = prefs.getString("address") ?? "No Address";
+    final savedPhone = prefs.getString("phone") ?? "No Phone";
+
+    String selectedMethod = "cod"; // Default
+
+    // ⭐ IMPORTANT: keep address for API
+    selectedAddress = savedAddress;   // ← ADD THIS
+    selectedPhone = savedPhone;
 
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
-      builder: (_) {
+      builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
             return Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const Text("Delivery Address",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  // Address
+                  ListTile(
+                    leading: Icon(Icons.location_on),
+                    title: Text("Delivery Address"),
+                    subtitle: Text(savedAddress),
+                  ),
+                  Divider(),
+                  // Address
+                  ListTile(
+                    leading: Icon(Icons.phone),
+                    title: Text("Phone"),
+                    subtitle: Text(savedPhone),
+                  ),
+                  Divider(),
 
-                  const SizedBox(height: 8),
-                  Text(savedAddress),
-
-                  const SizedBox(height: 16),
-                  const Divider(),
-
-                  const Text("Payment Method",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-
-                  Row(
-                    children: [
-                      Radio(
-                        value: 0,
-                        groupValue: paymentMethod,
-                        onChanged: (val) {
-                          setState(() => paymentMethod = val!);
-                        },
-                      ),
-                      const Text("Cash on Delivery"),
-                    ],
+                  // Payment Method
+                  RadioListTile(
+                    value: "cod",
+                    groupValue: selectedMethod,
+                    title: Text("Cash on Delivery"),
+                    onChanged: (v) => setState(() => selectedMethod = v.toString()),
                   ),
 
-                  Row(
-                    children: [
-                      Radio(
-                        value: 1,
-                        groupValue: paymentMethod,
-                        onChanged: (val) {
-                          setState(() => paymentMethod = val!);
-                        },
-                      ),
-                      const Text("Online Payment (Coming Soon)"),
-                    ],
+                  RadioListTile(
+                    value: "online",
+                    groupValue: selectedMethod,
+                    title: Text("Online Payment (Razorpay)"),
+                    onChanged: (v) => setState(() => selectedMethod = v.toString()),
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 10),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        await placeOrderAPI(
-                          userId!,
-                          paymentMethod,
-                          savedAddress,
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+
+                      if (selectedMethod == "cod") {
+                        placeOrder(
+                          paymentMethod: 0,
+                          transactionId: null,
+                          paidAmount: null,
                         );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text("Confirm Order"),
-                    ),
+                      } else {
+                        startOnlinePayment(); // 🔥 Razorpay call
+                      }
+                    },
+                    child: Text("Confirm Order"),
                   )
                 ],
               ),
@@ -134,34 +197,16 @@ class CartScreenState extends State<CartScreen> {
     );
   }
 
-  Future<void> placeOrderAPI(int userId, int paymentMethod, String address) async {
-    final url = Uri.parse("${ApiConfig.baseUrl}/api/place-order");
+  void startOnlinePayment() async {
+    final prefs = await SharedPreferences.getInstance();
 
-    final response = await http.post(
-      url,
-      headers: {
-        "Accept": "application/json",
-      },
-      body: {
-        "user_id": userId.toString(),
-        "payment_method": paymentMethod.toString(),
-        "address": address,
-      },
+    paymentService.openCheckout(
+      amount: (getTotalPrice() * 100).toInt(),  // to paise
+      userEmail: prefs.getString('email') ?? "",
+      userName: prefs.getString('name') ?? "User",
+      userPhone: prefs.getString('phone') ?? "",
     );
-
-    print("ORDER API: ${response.body}");
-
-    if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Order Placed Successfully")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${response.body}")),
-      );
-    }
   }
-
 
   Future<void> updateAllCartBeforeOrder() async {
     final prefs = await SharedPreferences.getInstance();
@@ -744,8 +789,8 @@ class CartScreenState extends State<CartScreen> {
                 await updateAllCartBeforeOrder();
 
                 // 🔥 Now call placeOrder API
-                showOrderConfirmSheet();          // open popup
-
+                // showOrderConfirmSheet();          // open popup
+                showPaymentDialog();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green.shade600,

@@ -15,6 +15,7 @@ import 'cart_screen.dart';
 import 'category_screen.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
+import 'my_orders_screen.dart';
 import 'new_products.dart';
 import 'edit_profile_screen.dart';
 
@@ -613,14 +614,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     subtitle: 'Check your order history',
                     color: Colors.blue,
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('My Orders feature coming soon!'),
-                          backgroundColor: Colors.blue.shade600,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const MyOrdersScreen(),
                         ),
                       );
                     },
