@@ -53,13 +53,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     setState(() => loading = false);
 
     if (success) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (_) => const HomeScreen()),
-      // );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
+        MaterialPageRoute(
+          builder: (_) => const MainNavigation(initialIndex: 0),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
