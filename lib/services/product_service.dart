@@ -5,7 +5,7 @@ import '../baseapi.dart';
 
 class ProductService {
   Future<List<ProductModel>> getProductsByCategory(int categoryId) async {
-    final url = Uri.parse("${ApiConfig.baseUrl}/api/products/$categoryId");
+    final url = Uri.parse("${ApiConfig.baseUrl}/api/productscat/$categoryId");
 
     final response = await http.get(url);
 
