@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:bmt99_app/screens/my_orders_screen.dart';
 import 'package:flutter/material.dart';
 
 class OrderSuccessScreen extends StatefulWidget {
@@ -32,7 +33,12 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
 
     // Auto redirect after 3 sec
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MyOrdersScreen(),
+        ),
+      );
     });
   }
 
@@ -128,7 +134,12 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MyOrdersScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green.shade700,
@@ -138,7 +149,7 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                     ),
                   ),
                   child: const Text(
-                    "Back to Home",
+                    "Check Order",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
