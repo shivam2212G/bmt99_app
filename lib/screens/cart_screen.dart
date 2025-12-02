@@ -1200,7 +1200,7 @@ class CartScreenState extends State<CartScreen> {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            // Logo/Icon with gradient
+            // Logo/Icon
             Container(
               width: 40,
               height: 40,
@@ -1220,57 +1220,40 @@ class CartScreenState extends State<CartScreen> {
                 ],
               ),
               child: const Icon(
-                Icons.shopping_cart_rounded,
+                Icons.shopping_cart,
                 color: Colors.green,
                 size: 24,
               ),
             ),
             const SizedBox(width: 12),
 
-            // Title with improved styling
+            // Title
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "MY CART",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            color: Colors.white,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    "MY CART",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                      color: Colors.white,
+                      letterSpacing: 0.8,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Text(
-                        "Review your items",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white.withOpacity(0.85),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      TweenAnimationBuilder(
-                        duration: const Duration(milliseconds: 500),
-                        tween: Tween<double>(begin: 0, end: 1),
-                        builder: (context, value, child) {
-                          return Transform.scale(
-                            scale: 1 + 0.1 * math.sin(value * 2 * math.pi),
-                            child: child,
-                          );
-                        },
-                        child: const Text("🛒", style: TextStyle(fontSize: 12)),
-                      ),
-                    ],
+                  Text(
+                    "Bucket List",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white.withOpacity(0.9),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -1290,99 +1273,74 @@ class CartScreenState extends State<CartScreen> {
         foregroundColor: Colors.white,
         elevation: 0,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        toolbarHeight: 80,
+        toolbarHeight: 70,
         actions: [
-          // Notification icon with improved badge
-          Stack(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  icon: const Icon(Iconsax.notification, size: 22),
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
-                ),
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade400,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.green.shade800, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.red.shade400.withOpacity(0.3),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold,
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
+          // Notification icon
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: IconButton(
+              icon: Badge(
+                label: const Text('2'),
+                backgroundColor: Colors.red.shade400,
+                textColor: Colors.white,
+                smallSize: 18,
+                child: Icon(
+                  Iconsax.notification,
+                  size: 22,
+                  color: Colors.white.withOpacity(0.95),
                 ),
               ),
-            ],
+              onPressed: () {},
+              padding: const EdgeInsets.all(8),
+            ),
           ),
-          const SizedBox(width: 12),
-
           // Search icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 1,
+          Padding(
+            padding: const EdgeInsets.only(right: 12, left: 4),
+            child: IconButton(
+              icon: Icon(
+                Icons.search_rounded,
+                size: 22,
+                color: Colors.white.withOpacity(0.95),
               ),
-            ),
-            child: const Icon(
-              Icons.search_rounded,
-              size: 20,
-              color: Colors.white,
+              onPressed: () {},
+              padding: const EdgeInsets.all(8),
             ),
           ),
-          const SizedBox(width: 16),
         ],
       ),
 
-      body: Column(
-        children: [
-          Expanded(
-            child: loading
-                ? _buildCartItemShimmer() // Use shimmer instead of loader
-                : cartItems.isEmpty
-                ? _buildEmptyCart()
-                : _buildCartList(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.green.shade50,
+              Colors.green.shade100,
+              Colors.green.shade200,
+            ],
           ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: loading
+                  ? _buildCartItemShimmer() // Use shimmer instead of loader
+                  : cartItems.isEmpty
+                  ? _buildEmptyCart()
+                  : _buildCartList(),
+            ),
 
-          // Checkout Section
-          if (loading && cartItems.isNotEmpty)
-            _buildCheckoutSectionShimmer()
-          else if (!loading && cartItems.isNotEmpty)
-            _buildCheckoutSection(),
-        ],
+            // Checkout Section
+            if (loading && cartItems.isNotEmpty)
+              _buildCheckoutSectionShimmer()
+            else if (!loading && cartItems.isNotEmpty)
+              _buildCheckoutSection(),
+          ],
+        ),
       ),
     );
   }

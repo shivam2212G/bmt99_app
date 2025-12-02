@@ -72,12 +72,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
     final userId = prefs.getInt('user_id');
 
     if (userId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please login to add items to cart"),
-          backgroundColor: Colors.orange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Please login to add items to cart"),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
       return;
     }
 
@@ -87,34 +89,38 @@ class _WishlistScreenState extends State<WishlistScreen> {
         productId: product.productId,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result["message"]),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result["message"]),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Failed to add item to cart"),
-          backgroundColor: Colors.red.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Failed to add item to cart"),
+            backgroundColor: Colors.red.shade600,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 
   // Shimmer effect for wishlist header
   Widget _buildWishlistHeaderShimmer() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return Container(
+      margin: const EdgeInsets.all(16),
       child: Column(
         children: [
           // Image shimmer
@@ -123,12 +129,12 @@ class _WishlistScreenState extends State<WishlistScreen> {
               height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
                 color: Colors.grey.shade300,
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           // Title shimmer
           Shimmer(
             child: Container(
@@ -140,12 +146,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           // Description shimmer
           Shimmer(
             child: Container(
               height: 16,
               width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 color: Colors.grey.shade300,
@@ -162,24 +169,24 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
         childAspectRatio: 0.75,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: 6,
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.08),
-                blurRadius: 15,
-                offset: const Offset(0, 6),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -189,12 +196,12 @@ class _WishlistScreenState extends State<WishlistScreen> {
               // Image shimmer
               Shimmer(
                 child: Container(
-                  height: 140,
+                  height: 130,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
                     ),
                   ),
                 ),
@@ -214,18 +221,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               height: 14,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Shimmer(
                             child: Container(
                               height: 12,
                               width: 80,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
@@ -240,7 +247,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               height: 16,
                               width: 60,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
@@ -251,7 +258,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               height: 36,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
@@ -269,9 +276,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
-  // Product card widget matching CategoryScreen design
+  // Product card widget with responsive design
   Widget _buildProductCard(dynamic item) {
     final product = ProductModel.fromJson(item["product"]);
+    final double cardWidth = MediaQuery.of(context).size.width;
+    final bool isLargeScreen = cardWidth > 600;
 
     return GestureDetector(
       onTap: () {
@@ -285,12 +294,12 @@ class _WishlistScreenState extends State<WishlistScreen> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 6),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
           border: Border.all(color: Colors.grey.shade100, width: 1),
@@ -303,29 +312,42 @@ class _WishlistScreenState extends State<WishlistScreen> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
+                    top: Radius.circular(16),
                   ),
                   child: Container(
-                    height: 140,
+                    height: isLargeScreen ? 160 : 130,
                     width: double.infinity,
-                    color: Colors.grey.shade100,
+                    color: Colors.grey.shade50,
                     child: Image.network(
                       "${ApiConfig.baseUrl}/${product.productImage}",
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                                : null,
+                            color: Colors.green.shade600,
+                            strokeWidth: 2,
+                          ),
+                        );
+                      },
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
+                                Colors.grey.shade100,
                                 Colors.grey.shade200,
-                                Colors.grey.shade300,
                               ],
                             ),
                           ),
                           child: Icon(
-                            Icons.shopping_bag,
+                            Icons.shopping_bag_rounded,
                             color: Colors.grey.shade400,
-                            size: 50,
+                            size: 40,
                           ),
                         );
                       },
@@ -347,7 +369,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         gradient: LinearGradient(
                           colors: [Colors.red.shade400, Colors.red.shade600],
                         ),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.red.withOpacity(0.3),
@@ -379,8 +401,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.8),
+                            Colors.black.withOpacity(0.9),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.white.withOpacity(0.2)),
                       ),
                       child: Text(
                         product.featureBrand!.featureBrandName!,
@@ -402,7 +430,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.9),
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade400, Colors.red.shade600],
+                        ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -413,9 +443,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         ],
                       ),
                       child: const Icon(
-                        Icons.favorite,
+                        Icons.favorite_rounded,
                         color: Colors.white,
-                        size: 16,
+                        size: 14,
                       ),
                     ),
                   ),
@@ -425,7 +455,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -433,36 +463,34 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Product Name with character limit
+                        // Product Name
                         Text(
-                          product.productName.length > 17
-                              ? '${product.productName.substring(0, 17)}...'
-                              : product.productName,
+                          product.productName,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style: TextStyle(
+                            fontSize: isLargeScreen ? 14 : 13,
                             fontWeight: FontWeight.w700,
                             height: 1.3,
-                            color: Colors.black87,
+                            color: Colors.grey.shade900,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
 
                         // Rating
                         Row(
                           children: [
                             Icon(
-                              Icons.star,
+                              Icons.star_rounded,
                               color: Colors.amber.shade600,
-                              size: 14,
+                              size: 12,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 3),
                             Text(
                               "4.5",
                               style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.grey.shade600,
+                                color: Colors.grey.shade700,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -489,7 +517,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             Text(
                               "₹${product.productPrice}",
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: isLargeScreen ? 18 : 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green.shade700,
                               ),
@@ -499,36 +527,38 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               Text(
                                 "₹${product.productMrp}",
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: isLargeScreen ? 13 : 12,
                                   color: Colors.grey.shade500,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 2),
 
                         // Add to Cart Button
                         SizedBox(
                           width: double.infinity,
+                          height: 38,
                           child: ElevatedButton.icon(
                             onPressed: () => addToCart(product),
-                            icon: const Icon(Icons.shopping_cart, size: 16),
-                            label: const Text(
+                            icon: const Icon(Icons.shopping_cart_outlined, size: 16),
+                            label: Text(
                               "Add to Cart",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: isLargeScreen ? 13 : 12,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green.shade600,
                               foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              elevation: 2,
+                              elevation: 1,
+                              shadowColor: Colors.green.shade200,
                             ),
                           ),
                         ),
@@ -545,20 +575,31 @@ class _WishlistScreenState extends State<WishlistScreen> {
   }
 
   Widget _emptyWishlistView() {
-    return Center(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.favorite_border, size: 90, color: Colors.red.shade300),
-          const SizedBox(height: 15),
-          const Text(
-            "Your wishlist is empty!",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          Icon(
+            Icons.favorite_border_rounded,
+            size: 80,
+            color: Colors.grey.shade300,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 16),
           Text(
-            "Add items to view them here.",
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+            "Your wishlist is empty",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey.shade500,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Add your favorite products to see them here",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade400,
+            ),
           ),
         ],
       ),
@@ -567,12 +608,17 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isLargeScreen = screenWidth > 600;
+    final double gridCrossAxisCount = isLargeScreen ? 3 : 2;
+    final double productAspectRatio = isLargeScreen ? 0.7 : 0.75;
+
     return Scaffold(
       appBar: AppBar(
-
+        // automaticallyImplyLeading: false,
         title: Row(
           children: [
-            // Logo/Icon with gradient
+            // Logo/Icon
             Container(
               width: 40,
               height: 40,
@@ -599,43 +645,33 @@ class _WishlistScreenState extends State<WishlistScreen> {
             ),
             const SizedBox(width: 12),
 
-            // Title with improved styling
+            // Title
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "MY WISHLIST",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            color: Colors.white,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    "MY WISHLIST",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                      color: Colors.white,
+                      letterSpacing: 0.8,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Text(
-                        "Your favorite items",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white.withOpacity(0.85),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Text(
-                        "❤️",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
+                  Text(
+                    "Your favorite items",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white.withOpacity(0.9),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -655,276 +691,258 @@ class _WishlistScreenState extends State<WishlistScreen> {
         foregroundColor: Colors.white,
         elevation: 0,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        toolbarHeight: 80,
+        toolbarHeight: 70,
         actions: [
-          // Notification icon with badge
-          Stack(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  icon: const Icon(Iconsax.notification, size: 22),
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
+          // Notification icon
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: IconButton(
+              icon: Badge(
+                label: Text('${wishlistItems.length}'),
+                backgroundColor: Colors.amber.shade600,
+                textColor: Colors.white,
+                smallSize: 18,
+                child: Icon(
+                  Iconsax.notification,
+                  size: 22,
+                  color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: Colors.amber.shade600,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.red.shade800, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.amber.shade600.withOpacity(0.3),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+              onPressed: () {},
+              padding: const EdgeInsets.all(8),
+            ),
+          ),
+          // Search icon
+          Padding(
+            padding: const EdgeInsets.only(right: 12, left: 4),
+            child: IconButton(
+              icon: Icon(
+                Icons.search_rounded,
+                size: 22,
+                color: Colors.white.withOpacity(0.95),
+              ),
+              onPressed: () {},
+              padding: const EdgeInsets.all(8),
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              // WISHLIST HEADER SECTION
+              loading
+                  ? _buildWishlistHeaderShimmer()
+                  : Container(
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Header Image
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(16),
                       ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${wishlistItems.length}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold,
-                        height: 1.2,
+                      child: Container(
+                        height: 140,
+                        width: double.infinity,
+                        color: Colors.red.shade50,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              right: 20,
+                              top: 20,
+                              child: Icon(
+                                Icons.favorite_rounded,
+                                size: 60,
+                                color: Colors.red.shade100,
+                              ),
+                            ),
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite_rounded,
+                                    color: Colors.red.shade600,
+                                    size: 40,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "${wishlistItems.length} Items",
+                                    style: TextStyle(
+                                      color: Colors.red.shade800,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "In Your Wishlist",
+                                    style: TextStyle(
+                                      color: Colors.red.shade600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          // Title
+                          Text(
+                            "My Wishlist",
+                            style: TextStyle(
+                              fontSize: isLargeScreen ? 22 : 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade900,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+                          // Description
+                          Text(
+                            wishlistItems.isEmpty
+                                ? "Add your favorite products to see them here"
+                                : "Your saved favorite items are ready to shop",
+                            style: TextStyle(
+                              fontSize: isLargeScreen ? 15 : 14,
+                              color: Colors.grey.shade600,
+                              height: 1.4,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // PRODUCTS SECTION
+              Container(
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 15,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // HEADER WITH TITLE AND COUNT
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.favorite_outlined,
+                                color: Colors.red.shade700,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                loading ? "Loading Wishlist" : "Wishlist Items",
+                                style: TextStyle(
+                                  fontSize: isLargeScreen ? 20 : 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade800,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.red.shade400,
+                                  Colors.pink.shade400,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              loading ? "0 Items" : "${wishlistItems.length} Items",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // PRODUCT GRID WITH SHIMMER OR EMPTY STATE
+                    if (loading)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        child: _buildProductGridShimmer(),
+                      )
+                    else if (wishlistItems.isEmpty)
+                      _emptyWishlistView()
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: gridCrossAxisCount.toInt(),
+                            childAspectRatio: productAspectRatio,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            mainAxisExtent: isLargeScreen ? 280 : 250,
+                          ),
+                          itemCount: wishlistItems.length,
+                          itemBuilder: (context, index) {
+                            return _buildProductCard(wishlistItems[index]);
+                          },
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 12),
-
-          // Search icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 1,
-              ),
-            ),
-            child: const Icon(
-              Icons.search_rounded,
-              size: 20,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            // WISHLIST HEADER SECTION
-            loading
-                ? _buildWishlistHeaderShimmer()
-                : Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Header Image
-                  Container(
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.red.shade400, Colors.red.shade600],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: 20,
-                          top: 20,
-                          child: Icon(
-                            Icons.favorite_rounded,
-                            size: 60,
-                            color: Colors.white.withOpacity(0.3),
-                          ),
-                        ),
-                        Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.favorite_rounded,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                "${wishlistItems.length} Items",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              const Text(
-                                "In Your Wishlist",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // Title
-                  const Text(
-                    "My Wishlist ❤️",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 6),
-
-                  // Description
-                  Text(
-                    wishlistItems.isEmpty
-                        ? "Add your favorite products to see them here"
-                        : "Your saved favorite items are ready to shop",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            // PRODUCTS SECTION - Matching CategoryScreen UI
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  // HEADER WITH TITLE AND BADGE
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Wishlist Items 🛍️",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade800,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.red.shade400, Colors.pink.shade400],
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.red.withOpacity(0.3),
-                                blurRadius: 8,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            loading ? "0 Items" : "${wishlistItems.length} Items",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // PRODUCT GRID WITH SHIMMER OR EMPTY STATE
-                  if (loading)
-                    _buildProductGridShimmer()
-                  else if (wishlistItems.isEmpty)
-                    _emptyWishlistView()
-                  else
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.75,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: wishlistItems.length,
-                      itemBuilder: (context, index) {
-                        return _buildProductCard(wishlistItems[index]);
-                      },
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
         ),
       ),
     );

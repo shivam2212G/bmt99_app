@@ -13,53 +13,69 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-        child: Row(
-          children: [
-            _buildNavItem(
-              icon: Icons.home_outlined,
-              activeIcon: Icons.home_filled,
-              label: "Home",
-              index: 0,
-            ),
-            _buildNavItem(
-              icon: Icons.category_outlined,
-              activeIcon: Icons.category,
-              label: "Category",
-              index: 1,
-            ),
-            _buildNavItem(
-              icon: Icons.explore_outlined,
-              activeIcon: Icons.explore_rounded,
-              label: "Discover",
-              index: 2,
-            ),
-            _buildNavItem(
-              icon: Icons.shopping_cart_outlined,
-              activeIcon: Icons.shopping_cart,
-              label: "Cart",
-              index: 3,
-            ),
-            _buildNavItem(
-              icon: Icons.person_outlined,
-              activeIcon: Icons.person,
-              label: "Profile",
-              index: 4,
-            ),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.green.shade200,
+            Colors.green.shade300,
           ],
+        ),
+      ),
+
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8,0,8,8),
+        child: Container(
+          decoration: BoxDecoration(
+            // color: Colors.white30,
+            color: Colors.green.shade200,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 15,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+            child: Row(
+              children: [
+                _buildNavItem(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home_filled,
+                  label: "Home",
+                  index: 0,
+                ),
+                _buildNavItem(
+                  icon: Icons.category_outlined,
+                  activeIcon: Icons.category,
+                  label: "Category",
+                  index: 1,
+                ),
+                _buildNavItem(
+                  icon: Icons.explore_outlined,
+                  activeIcon: Icons.explore_rounded,
+                  label: "Discover",
+                  index: 2,
+                ),
+                _buildNavItem(
+                  icon: Icons.shopping_cart_outlined,
+                  activeIcon: Icons.shopping_cart,
+                  label: "Cart",
+                  index: 3,
+                ),
+                _buildNavItem(
+                  icon: Icons.person_outlined,
+                  activeIcon: Icons.person,
+                  label: "Profile",
+                  index: 4,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -82,7 +98,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           curve: Curves.easeOut,
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isActive ? Colors.green.shade600 : Colors.transparent,
+            color: isActive ? Colors.green.shade700 : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
