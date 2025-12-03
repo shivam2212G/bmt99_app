@@ -257,264 +257,270 @@ class CartScreenState extends State<CartScreen> {
             final bool isMissing = address.trim().isEmpty || phone.trim().isEmpty;
             final bool canConfirm = !isMissing && !isSaving;
 
-            return Padding(
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                color: Colors.green.shade50
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Title
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Confirm Order",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (isMissing)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.red.shade200),
-                          ),
-                          child: const Text(
-                            "Address & Phone required",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // ---------------- ADDRESS ----------------
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Delivery Address",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: address.isEmpty
-                            ? Colors.red.shade200
-                            : Colors.grey.shade300,
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Icon(Icons.location_on, color: Colors.green),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            address.isEmpty
-                                ? "No address set. Tap below to use current location."
-                                : address,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: address.isEmpty
-                                  ? Colors.red.shade400
-                                  : Colors.grey.shade800,
-                            ),
+                        const Text(
+                          "Confirm Order",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        if (isMissing)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.red.shade200),
+                            ),
+                            child: const Text(
+                              "Address & Phone required",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
-                  ),
 
-                  const SizedBox(height: 8),
+                    const SizedBox(height: 16),
 
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton.icon(
-                      onPressed: isSaving
-                          ? null
-                          : () async {
-                        setModalState(() => isSaving = true);
-                        final locAddress = await _getCurrentAddress();
-                        setModalState(() => isSaving = false);
-
-                        if (locAddress != null) {
-                          setModalState(() {
-                            address = locAddress;
-                            selectedAddress = locAddress;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.my_location, size: 18),
-                      label: Text(
-                        isSaving ? "Getting location..." : "Use current location",
+                    // ---------------- ADDRESS ----------------
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Delivery Address",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 8),
 
-                  const SizedBox(height: 16),
-
-                  // ---------------- PHONE ----------------
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Phone Number",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  TextField(
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.phone),
-                      hintText: "Enter phone number",
-                      border: OutlineInputBorder(
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(12),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: phone.isEmpty
+                        border: Border.all(
+                          color: address.isEmpty
                               ? Colors.red.shade200
                               : Colors.grey.shade300,
                         ),
                       ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.location_on, color: Colors.green),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              address.isEmpty
+                                  ? "No address set. Tap below to use current location."
+                                  : address,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: address.isEmpty
+                                    ? Colors.red.shade400
+                                    : Colors.grey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    onChanged: (val) {
-                      setModalState(() {
-                        phone = val;
-                        selectedPhone = val;
-                      });
-                    },
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: phone,
-                        selection: TextSelection.collapsed(
-                          offset: phone.length,
+
+                    const SizedBox(height: 8),
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        onPressed: isSaving
+                            ? null
+                            : () async {
+                          setModalState(() => isSaving = true);
+                          final locAddress = await _getCurrentAddress();
+                          setModalState(() => isSaving = false);
+
+                          if (locAddress != null) {
+                            setModalState(() {
+                              address = locAddress;
+                              selectedAddress = locAddress;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.my_location, size: 18),
+                        label: Text(
+                          isSaving ? "Getting location..." : "Use current location",
                         ),
                       ),
                     ),
-                  ),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 16),
 
-                  // ---------------- PAYMENT METHOD ----------------
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Payment Method",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
+                    // ---------------- PHONE ----------------
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Phone Number",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 8),
 
-                  RadioListTile(
-                    value: "cod",
-                    groupValue: selectedMethod,
-                    title: const Text("Cash on Delivery"),
-                    onChanged: (v) =>
-                        setModalState(() => selectedMethod = v.toString()),
-                  ),
-
-                  RadioListTile(
-                    value: "online",
-                    groupValue: selectedMethod,
-                    title: const Text("Online Payment (Razorpay)"),
-                    onChanged: (v) =>
-                        setModalState(() => selectedMethod = v.toString()),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // ---------------- CONFIRM BUTTON ----------------
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: !canConfirm
-                          ? null
-                          : () async {
-                        // 1) Save phone + address via edit-profile
-                        setModalState(() => isSaving = true);
-                        final ok =
-                        await _saveAddressAndPhone(phone, address);
-                        setModalState(() => isSaving = false);
-
-                        if (!ok) return;
-
-                        // Close bottom sheet
-                        Navigator.pop(context);
-
-                        // 2) Proceed to payment / COD
-                        if (selectedMethod == "cod") {
-                          await placeOrder(
-                            paymentMethod: 0,
-                            transactionId: null,
-                            paidAmount: null,
-                          );
-                        } else {
-                          startOnlinePayment();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: canConfirm
-                            ? Colors.green.shade600
-                            : Colors.grey.shade400,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
+                    TextField(
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.phone),
+                        hintText: "Enter phone number",
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                      ),
-                      child: isSaving
-                          ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: phone.isEmpty
+                                ? Colors.red.shade200
+                                : Colors.grey.shade300,
+                          ),
                         ),
-                      )
-                          : const Text(
-                        "Confirm Order",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      ),
+                      onChanged: (val) {
+                        setModalState(() {
+                          phone = val;
+                          selectedPhone = val;
+                        });
+                      },
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          text: phone,
+                          selection: TextSelection.collapsed(
+                            offset: phone.length,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 20),
+
+                    // ---------------- PAYMENT METHOD ----------------
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Payment Method",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
+                    ),
+
+                    RadioListTile(
+                      value: "cod",
+                      groupValue: selectedMethod,
+                      title: const Text("Cash on Delivery"),
+                      onChanged: (v) =>
+                          setModalState(() => selectedMethod = v.toString()),
+                    ),
+
+                    RadioListTile(
+                      value: "online",
+                      groupValue: selectedMethod,
+                      title: const Text("Online Payment (Razorpay)"),
+                      onChanged: (v) =>
+                          setModalState(() => selectedMethod = v.toString()),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // ---------------- CONFIRM BUTTON ----------------
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: !canConfirm
+                            ? null
+                            : () async {
+                          // 1) Save phone + address via edit-profile
+                          setModalState(() => isSaving = true);
+                          final ok =
+                          await _saveAddressAndPhone(phone, address);
+                          setModalState(() => isSaving = false);
+
+                          if (!ok) return;
+
+                          // Close bottom sheet
+                          Navigator.pop(context);
+
+                          // 2) Proceed to payment / COD
+                          if (selectedMethod == "cod") {
+                            await placeOrder(
+                              paymentMethod: 0,
+                              transactionId: null,
+                              paidAmount: null,
+                            );
+                          } else {
+                            startOnlinePayment();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: canConfirm
+                              ? Colors.green.shade600
+                              : Colors.grey.shade400,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: isSaving
+                            ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                            : const Text(
+                          "Confirm Order",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

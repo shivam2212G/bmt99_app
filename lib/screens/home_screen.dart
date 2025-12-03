@@ -1425,94 +1425,94 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(16),
                     child: CarouselSlider(
                       items: sliders.map((item) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.green.shade800.withOpacity(0.95),
-                                Colors.green.shade600.withOpacity(0.95),
-                              ],
-                            ),
-                          ),
-                          child: Stack(
-                            children: [
-                              if (item.sliderImage.isNotEmpty)
-                                ColorFiltered(
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.25),
-                                    BlendMode.darken,
-                                  ),
-                                  child: Image.network(
-                                      "${ApiConfig.baseUrl}/${item.sliderImage}",
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(color: Colors.green.shade600);
-                                      },
-                                  ),
+                        return Stack(
+                          children: [
+                            // Background Image
+                            if (item.sliderImage.isNotEmpty)
+                              SizedBox(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Image.network(
+                                  "${ApiConfig.baseUrl}/${item.sliderImage}",
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.green.shade600,
+                                    );
+                                  },
                                 ),
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.sliderTitle,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 0.5,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Container(
-                                      width: 60,
-                                      height: 4,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    if (item.sliderDescription != null &&
-                                        item.sliderDescription!.isNotEmpty)
-                                      Text(
-                                        item.sliderDescription!,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.4,
-                                        ),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                              ),
+                            // Gradient Overlay
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.black.withOpacity(0.4),
+                                    Colors.black.withOpacity(0.2),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            // Text Content
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.sliderTitle,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 0.5,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    width: 60,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  if (item.sliderDescription != null &&
+                                      item.sliderDescription!.isNotEmpty)
+                                    Text(
+                                      item.sliderDescription!,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.4,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
                         );
                       }).toList(),
                       options: CarouselOptions(
                         height: 200,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 5),
-                        autoPlayAnimationDuration:
-                        const Duration(milliseconds: 1000),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 1000),
                         autoPlayCurve: Curves.easeInOut,
                         enlargeCenterPage: true,
                         viewportFraction: 1.0,
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
-                  )
+                  ),
                 ),
 
                 // ---------- CATEGORIES SECTION (OLD UI) ----------
