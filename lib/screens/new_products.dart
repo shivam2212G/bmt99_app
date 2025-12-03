@@ -246,7 +246,7 @@ class _NewProductsState extends State<NewProducts> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.green.shade100,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -719,7 +719,7 @@ class _NewProductsState extends State<NewProducts> {
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.green.shade100,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -804,7 +804,7 @@ class _NewProductsState extends State<NewProducts> {
                               height: 40,
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade300),
+                                border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: DropdownButton<String>(
@@ -833,7 +833,7 @@ class _NewProductsState extends State<NewProducts> {
                               height: 40,
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade300),
+                                border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: DropdownButton<int>(
@@ -880,7 +880,7 @@ class _NewProductsState extends State<NewProducts> {
                               height: 40,
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade300),
+                                border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: DropdownButton<int>(
@@ -928,11 +928,11 @@ class _NewProductsState extends State<NewProducts> {
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(color: Colors.white),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(color: Colors.white),
                                       ),
                                     ),
                                     onSubmitted: (_) => _fetchWithFilters(),
@@ -949,11 +949,11 @@ class _NewProductsState extends State<NewProducts> {
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(color: Colors.white),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(color: Colors.grey.shade300),
+                                        borderSide: BorderSide(color: Colors.white),
                                       ),
                                     ),
                                     onSubmitted: (_) => _fetchWithFilters(),
@@ -987,7 +987,7 @@ class _NewProductsState extends State<NewProducts> {
                 Container(
                   padding: const EdgeInsets.only(top: 20, bottom: 20),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
+                    color: Colors.transparent,
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
@@ -1034,7 +1034,7 @@ class _NewProductsState extends State<NewProducts> {
                                 gradient: LinearGradient(
                                   colors: [
                                     Colors.green.shade400,
-                                    Colors.blue.shade400,
+                                    Colors.green.shade500,
                                   ],
                                 ),
                                 borderRadius: BorderRadius.circular(12),

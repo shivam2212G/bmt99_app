@@ -647,18 +647,85 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Shimmer for brands horizontal list (OLD UI)
   Widget _buildBrandsShimmer() {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: 6,
-        itemBuilder: (context, index) {
+    return Column(
+      children: [
+        // First row shimmer (4 items)
+        _buildBrandRowShimmer(3),
+
+        // Second row shimmer (4 items)
+        const SizedBox(height: 16),
+        _buildBrandRowShimmer(3),
+
+        // Remaining items horizontal scroll shimmer
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Shimmer(
+            child: Container(
+              width: 100,
+              height: 16,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 80,
+                margin: const EdgeInsets.only(right: 12),
+                child: Column(
+                  children: [
+                    Shimmer(
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Shimmer(
+                      child: Container(
+                        width: 50,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+// Helper method to build a row of shimmer items
+  Widget _buildBrandRowShimmer(int itemCount) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(itemCount, (index) {
           return Container(
             width: 80,
-            margin: const EdgeInsets.only(right: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             child: Column(
               children: [
                 Shimmer(
@@ -685,7 +752,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           );
-        },
+        }),
       ),
     );
   }
@@ -809,7 +876,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: categories.length,
+        // itemCount: categories.length,
+        itemCount: categories.length > 10 ? 10 : categories.length,
         itemBuilder: (context, index) {
           final cat = categories[index];
           return GestureDetector(
@@ -891,84 +959,124 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // OLD UI: Brands horizontal list
   Widget _buildBrandsList() {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: brands.length,
-        itemBuilder: (context, index) {
-          final brand = brands[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => BrandProductsScreen(
-                    brandId: brand.featureBrandId,
-                    brandName: brand.featureBrandName,
-                    brandImage: brand.featureBrandImage,
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              width: 80,
-              margin: const EdgeInsets.only(right: 12),
-              child: Column(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      border: Border.all(color: Colors.grey.shade200),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        "${ApiConfig.baseUrl}/${brand.featureBrandImage}",
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey.shade100,
-                            child: Center(
-                              child: Icon(
-                                Icons.business_rounded,
-                                color: Colors.grey.shade400,
-                                size: 28,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    brand.featureBrandName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade700,
-                    ),
-                    textAlign: TextAlign.center,
+    // Split brands into chunks
+    List<List<FeatureBrandModel>> brandChunks = [];
+    for (int i = 0; i < brands.length; i += 3) {
+      int end = (i + 3 < brands.length) ? i + 3 : brands.length;
+      brandChunks.add(brands.sublist(i, end));
+    }
+
+    return Column(
+      children: [
+        // First row (first 4 brands)
+        if (brandChunks.isNotEmpty && brandChunks[0].isNotEmpty)
+          _buildBrandRow(brandChunks[0], 0),
+
+        // Second row (next 4 brands)
+        if (brandChunks.length > 1 && brandChunks[1].isNotEmpty)
+          _buildBrandRow(brandChunks[1], 1),
+
+        // Remaining brands in horizontal scroll
+        if (brandChunks.length > 2)
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: brands.length > 8 ? brands.length - 8 : 0,
+              itemBuilder: (context, index) {
+                final brand = brands[index + 8];
+                return _buildBrandItem(brand);
+              },
+            ),
+          ),
+      ],
+    );
+  }
+
+// Helper method to build a row of 4 brands
+  Widget _buildBrandRow(List<FeatureBrandModel> rowBrands, int rowIndex) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: rowBrands.asMap().entries.map((entry) {
+          final brand = entry.value;
+          return _buildBrandItem(brand);
+        }).toList(),
+      ),
+    );
+  }
+
+// Helper method to build individual brand item
+  Widget _buildBrandItem(FeatureBrandModel brand) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BrandProductsScreen(
+              brandId: brand.featureBrandId,
+              brandName: brand.featureBrandName,
+              brandImage: brand.featureBrandImage,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        width: 80,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        child: Column(
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
                   ),
                 ],
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  "${ApiConfig.baseUrl}/${brand.featureBrandImage}",
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey.shade100,
+                      child: Center(
+                        child: Icon(
+                          Icons.business_rounded,
+                          color: Colors.grey.shade400,
+                          size: 28,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          );
-        },
+            const SizedBox(height: 8),
+            Text(
+              brand.featureBrandName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1150,9 +1258,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
+              Colors.green.shade50,
               Colors.green.shade100,
               Colors.green.shade200,
             ],
@@ -1336,13 +1445,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     BlendMode.darken,
                                   ),
                                   child: Image.network(
-                                    "${ApiConfig.baseUrl}/${item.sliderImage}",
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(color: Colors.green.shade600);
-                                    },
+                                      "${ApiConfig.baseUrl}/${item.sliderImage}",
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(color: Colors.green.shade600);
+                                      },
                                   ),
                                 ),
                               Padding(
@@ -1403,13 +1512,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
-                  ),
+                  )
                 ),
 
                 // ---------- CATEGORIES SECTION (OLD UI) ----------
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16,16,16,0),
                   decoration: BoxDecoration(
                     color: Colors.green.shade100,
                     borderRadius: BorderRadius.circular(16),
@@ -1462,6 +1571,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: InkWell(
                               onTap: (){
                                 print("Hello");
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const MainNavigation(initialIndex: 1),
+                                  ),
+                                );
                               },
                               child: Text(
                                 "${categories.length} View All",

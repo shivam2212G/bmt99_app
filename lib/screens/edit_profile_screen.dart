@@ -350,179 +350,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              // PROFILE AVATAR SECTION
-              Container(
-                margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.person_outline_rounded,
-                          color: Colors.green.shade700,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Profile Photo",
-                          style: TextStyle(
-                            fontSize: isLargeScreen ? 20 : 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade900,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: pickImage,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.green.shade100,
-                                  Colors.blue.shade100,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.green.shade300,
-                                width: 3,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: pickedImage != null
-                                  ? Image.file(
-                                pickedImage!,
-                                fit: BoxFit.cover,
-                              )
-                                  : (widget.avatar != null &&
-                                  widget.avatar!.isNotEmpty)
-                                  ? Image.network(
-                                widget.avatar!,
-                                fit: BoxFit.cover,
-                                errorBuilder:
-                                    (context, error, stackTrace) {
-                                  return Center(
-                                    child: Icon(
-                                      Icons.person_rounded,
-                                      color: Colors.green.shade600,
-                                      size: 40,
-                                    ),
-                                  );
-                                },
-                              )
-                                  : Center(
-                                child: Icon(
-                                  Icons.person_rounded,
-                                  color: Colors.green.shade600,
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.green.shade400,
-                                    Colors.green.shade600,
-                                  ],
-                                ),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_rounded,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ),
-                          ),
-                        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.green.shade50,
+              Colors.green.shade100,
+              Colors.green.shade200,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                // PROFILE AVATAR SECTION
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Tap to change photo",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // PROFILE INFORMATION FORM
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Form(
-                  key: _formKey,
+                    ],
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Icon(
-                            Icons.person_pin_circle_rounded,
+                            Icons.person_outline_rounded,
                             color: Colors.green.shade700,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "Personal Information",
+                            "Profile Photo",
                             style: TextStyle(
                               fontSize: isLargeScreen ? 20 : 18,
                               fontWeight: FontWeight.bold,
@@ -531,212 +402,354 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-
-                      // Name Field
-                      Text(
-                        "Full Name",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade700,
+                      const SizedBox(height: 16),
+                      GestureDetector(
+                        onTap: pickImage,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.green.shade100,
+                                    Colors.blue.shade100,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.green.shade300,
+                                  width: 3,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: pickedImage != null
+                                    ? Image.file(
+                                  pickedImage!,
+                                  fit: BoxFit.cover,
+                                )
+                                    : (widget.avatar != null &&
+                                    widget.avatar!.isNotEmpty)
+                                    ? Image.network(
+                                  widget.avatar!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Center(
+                                      child: Icon(
+                                        Icons.person_rounded,
+                                        color: Colors.green.shade600,
+                                        size: 40,
+                                      ),
+                                    );
+                                  },
+                                )
+                                    : Center(
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    color: Colors.green.shade600,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.green.shade400,
+                                      Colors.green.shade600,
+                                    ],
+                                  ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt_rounded,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: TextFormField(
-                          controller: nameCtrl,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey.shade800,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: "Enter your full name",
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.person_outline_rounded,
-                              color: Colors.grey.shade500,
-                              size: 20,
-                            ),
-                          ),
-                          validator: (v) =>
-                          v!.isEmpty ? "Please enter your name" : null,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Phone Field
                       Text(
-                        "Phone Number",
+                        "Tap to change photo",
                         style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade700,
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: TextFormField(
-                          controller: phoneCtrl,
-                          keyboardType: TextInputType.phone,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey.shade800,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: "Enter your phone number",
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.phone_outlined,
-                              color: Colors.grey.shade500,
+                    ],
+                  ),
+                ),
+
+                // PROFILE INFORMATION FORM
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.person_pin_circle_rounded,
+                              color: Colors.green.shade700,
                               size: 20,
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Address Field Header
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Address",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                          TextButton.icon(
-                            onPressed: getCurrentAddress,
-                            icon: Icon(
-                              Icons.my_location_rounded,
-                              color: Colors.green.shade600,
-                              size: 16,
-                            ),
-                            label: Text(
-                              "Use Current Location",
+                            const SizedBox(width: 8),
+                            Text(
+                              "Personal Information",
                               style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.green.shade600,
-                                fontWeight: FontWeight.w600,
+                                fontSize: isLargeScreen ? 20 : 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade900,
                               ),
                             ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Address Field
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
+                          ],
                         ),
-                        child: TextFormField(
-                          enabled: false,
-                          controller: addressCtrl,
-                          minLines: 2,
-                          maxLines: 4,
+                        const SizedBox(height: 20),
+
+                        // Name Field
+                        Text(
+                          "Full Name",
                           style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey.shade800,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade700,
                           ),
-                          decoration: InputDecoration(
-                            hintText: "Enter your complete address",
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white),
+                          ),
+                          child: TextFormField(
+                            controller: nameCtrl,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey.shade800,
                             ),
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.fromLTRB(0,25,0,40),
-                              child: Icon(
-                                Icons.location_on_outlined,
+                            decoration: InputDecoration(
+                              hintText: "Enter your full name",
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.person_outline_rounded,
+                                color: Colors.grey.shade500,
+                                size: 20,
+                              ),
+                            ),
+                            validator: (v) =>
+                            v!.isEmpty ? "Please enter your name" : null,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Phone Field
+                        Text(
+                          "Phone Number",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white),
+                          ),
+                          child: TextFormField(
+                            controller: phoneCtrl,
+                            keyboardType: TextInputType.phone,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey.shade800,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "Enter your phone number",
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.phone_outlined,
                                 color: Colors.grey.shade500,
                                 size: 20,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 16),
 
-                      // Save Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: isLoading ? null : updateProfile,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade600,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 24,
+                        // Address Field Header
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Address",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade700,
+                              ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 1,
-                            shadowColor: Colors.green.shade200,
-                          ),
-                          child: isLoading
-                              ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                              : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.save_rounded, size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                "Save Changes",
+                            TextButton.icon(
+                              onPressed: getCurrentAddress,
+                              icon: Icon(
+                                Icons.my_location_rounded,
+                                color: Colors.green.shade600,
+                                size: 16,
+                              ),
+                              label: Text(
+                                "Use Current Location",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 12,
+                                  color: Colors.green.shade600,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            ],
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+
+                        // Address Field
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white),
+                          ),
+                          child: TextFormField(
+                            enabled: false,
+                            controller: addressCtrl,
+                            minLines: 2,
+                            maxLines: 4,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey.shade800,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "Enter your complete address",
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.fromLTRB(0,25,0,40),
+                                child: Icon(
+                                  Icons.location_on_outlined,
+                                  color: Colors.grey.shade500,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 24),
+
+                        // Save Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: isLoading ? null : updateProfile,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green.shade600,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 24,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 1,
+                              shadowColor: Colors.green.shade200,
+                            ),
+                            child: isLoading
+                                ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.save_rounded, size: 20),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "Save Changes",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

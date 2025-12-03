@@ -15,11 +15,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
           colors: [
+            Colors.green.shade195,
             Colors.green.shade200,
-            Colors.green.shade300,
           ],
         ),
       ),

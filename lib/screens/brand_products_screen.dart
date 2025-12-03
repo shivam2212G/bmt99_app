@@ -169,7 +169,7 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.green.shade100,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -591,226 +591,240 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              // BRAND HEADER
-              Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    // Brand Image
-                    ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16),
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.green.shade50,
+              Colors.green.shade100,
+              Colors.green.shade200,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                // BRAND HEADER
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.green.shade100,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
                       ),
-                      child: Container(
-                        height: 180,
-                        width: double.infinity,
-                        color: Colors.grey.shade100,
-                        child: Image.network(
-                          "${ApiConfig.baseUrl}/${widget.brandImage}",
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.grey.shade200,
-                                      Colors.grey.shade300,
-                                    ],
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // Brand Image
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16),
+                        ),
+                        child: Container(
+                          height: 180,
+                          width: double.infinity,
+                          color: Colors.grey.shade100,
+                          child: Image.network(
+                            "${ApiConfig.baseUrl}/${widget.brandImage}",
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.grey.shade200,
+                                        Colors.grey.shade300,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.business_outlined,
+                                    size: 80,
+                                    color: Colors.grey.shade400,
                                   ),
                                 ),
-                                child: Icon(
-                                  Icons.business_outlined,
-                                  size: 80,
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          // Brand Name
-                          Text(
-                            widget.brandName,
-                            style: TextStyle(
-                              fontSize: isLargeScreen ? 24 : 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade900,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 8),
-                          // Products Count
-                          Text(
-                            "${products.length} Products Available",
-                            style: TextStyle(
-                              fontSize: isLargeScreen ? 15 : 14,
-                              color: Colors.grey.shade600,
-                              height: 1.4,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // PRODUCTS SECTION
-              Container(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 15,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    // HEADER WITH TITLE AND COUNT
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.local_offer_outlined,
-                                color: Colors.green.shade700,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                loading ? "Loading Products" : "${widget.brandName} Products",
-                                style: TextStyle(
-                                  fontSize: isLargeScreen ? 20 : 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade800,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.green.shade400,
-                                  Colors.blue.shade400,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              loading ? "0 Items" : "${products.length} Items",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // PRODUCT GRID
-                    if (loading)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                        child: _buildProductGridShimmer(),
-                      )
-                    else if (products.isEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 60),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            Icon(
-                              Icons.inventory_2_outlined,
-                              size: 80,
-                              color: Colors.grey.shade300,
-                            ),
-                            const SizedBox(height: 16),
+                            // Brand Name
                             Text(
-                              "No products available",
+                              widget.brandName,
                               style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey.shade500,
-                                fontWeight: FontWeight.w500,
+                                fontSize: isLargeScreen ? 24 : 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade900,
                               ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 8),
+                            // Products Count
                             Text(
-                              "Check back later for new arrivals",
+                              "${products.length} Products Available",
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.shade400,
+                                fontSize: isLargeScreen ? 15 : 14,
+                                color: Colors.grey.shade600,
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // PRODUCTS SECTION
+                Container(
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, -5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // HEADER WITH TITLE AND COUNT
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.local_offer_outlined,
+                                  color: Colors.green.shade700,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  loading ? "Loading Products" : "${widget.brandName} Products",
+                                  style: TextStyle(
+                                    fontSize: isLargeScreen ? 20 : 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.green.shade400,
+                                    Colors.green.shade500,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                loading ? "0 Items" : "${products.length} Items",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      )
-                    else
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: gridCrossAxisCount.toInt(),
-                            childAspectRatio: productAspectRatio,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            mainAxisExtent: isLargeScreen ? 280 : 250,
-                          ),
-                          itemCount: products.length,
-                          itemBuilder: (context, index) {
-                            return _buildProductCard(products[index]);
-                          },
-                        ),
                       ),
-                  ],
+                      const SizedBox(height: 8),
+
+                      // PRODUCT GRID
+                      if (loading)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                          child: _buildProductGridShimmer(),
+                        )
+                      else if (products.isEmpty)
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 60),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.inventory_2_outlined,
+                                size: 80,
+                                color: Colors.grey.shade300,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "No products available",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Check back later for new arrivals",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: gridCrossAxisCount.toInt(),
+                              childAspectRatio: productAspectRatio,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              mainAxisExtent: isLargeScreen ? 280 : 250,
+                            ),
+                            itemCount: products.length,
+                            itemBuilder: (context, index) {
+                              return _buildProductCard(products[index]);
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -86,55 +86,55 @@ class _CategoryScreenState extends State<CategoryScreen> {
         });
         await loadProducts(cat.categoryId);
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          gradient: isSelected
-              ? LinearGradient(
-            colors: [Colors.green.shade600, Colors.green.shade800],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )
-              : LinearGradient(
-            colors: [Colors.grey.shade100, Colors.grey.shade200],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? Colors.green.shade500 : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [
-            BoxShadow(
-              color: Colors.green.shade300.withOpacity(0.4),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            gradient: isSelected
+                ? LinearGradient(
+              colors: [Colors.green.shade600, Colors.green.shade800],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
+                : LinearGradient(
+              colors: [Colors.green.shade100, Colors.green.shade200],
             ),
-          ]
-              : [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isSelected ? Colors.green.shade500 : Colors.grey.shade300,
+              width: isSelected ? 2 : 1,
             ),
-          ],
+            boxShadow: isSelected
+                ? [
+              BoxShadow(
+                color: Colors.green.shade300.withOpacity(0.4),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ]
+                : [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              cat.categoryName,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? Colors.white : Colors.grey.shade800,
+                letterSpacing: 0.3,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
-        child: Center(
-          child: Text(
-            cat.categoryName,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: isSelected ? Colors.white : Colors.grey.shade800,
-              letterSpacing: 0.3,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
     );
   }
 
@@ -339,7 +339,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.green.shade100,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -783,7 +783,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             children: [
               // TOP HORIZONTAL CATEGORY LIST
               Container(
-                color: Colors.white,
+                color: Colors.green.shade100,
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
@@ -829,69 +829,75 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ),
                           ],
                         ),
-                        child: Column(
-                          children: [
-                            // Image
-                            ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                              child: Container(
-                                height: 160,
-                                width: double.infinity,
-                                color: Colors.grey.shade100,
-                                child: Image.network(
-                                  "${ApiConfig.baseUrl}/${categories[selectedCatIndex].categoryImage}",
-                                  fit: BoxFit.cover,
-                                  errorBuilder:
-                                      (context, error, stackTrace) {
-                                    return Center(
-                                      child: Icon(
-                                        Icons.category_outlined,
-                                        size: 60,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                    );
-                                  },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade100,
+                            borderRadius: BorderRadius.circular(16)
+                          ),
+                          child: Column(
+                            children: [
+                              // Image
+                              ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                                child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  color: Colors.grey.shade100,
+                                  child: Image.network(
+                                    "${ApiConfig.baseUrl}/${categories[selectedCatIndex].categoryImage}",
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Center(
+                                        child: Icon(
+                                          Icons.category_outlined,
+                                          size: 60,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                children: [
-                                  // Name
-                                  Text(
-                                    categories[selectedCatIndex]
-                                        .categoryName,
-                                    style: TextStyle(
-                                      fontSize: isLargeScreen ? 24 : 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade900,
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  children: [
+                                    // Name
+                                    Text(
+                                      categories[selectedCatIndex]
+                                          .categoryName,
+                                      style: TextStyle(
+                                        fontSize: isLargeScreen ? 24 : 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  // Description
-                                  Text(
-                                    categories[selectedCatIndex]
-                                        .categoryDescription ??
-                                        "No description available",
-                                    style: TextStyle(
-                                      fontSize: isLargeScreen ? 15 : 14,
-                                      color: Colors.grey.shade600,
-                                      height: 1.4,
+                                    const SizedBox(height: 8),
+                                    // Description
+                                    Text(
+                                      categories[selectedCatIndex]
+                                          .categoryDescription ??
+                                          "No description available",
+                                      style: TextStyle(
+                                        fontSize: isLargeScreen ? 15 : 14,
+                                        color: Colors.grey.shade600,
+                                        height: 1.4,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
 
@@ -901,7 +907,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       Container(
                         padding: const EdgeInsets.only(top: 20, bottom: 20),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
+                          color: Colors.transparent,
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(20),
                           ),
@@ -951,7 +957,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.green.shade400,
-                                          Colors.blue.shade400,
+                                          Colors.green.shade500,
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(12),

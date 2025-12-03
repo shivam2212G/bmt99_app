@@ -95,7 +95,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.green.shade50,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -113,7 +113,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                color: Colors.green.shade100,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
@@ -339,7 +339,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [Colors.green.shade400, Colors.blue.shade400],
+                            colors: [Colors.green.shade400, Colors.green.shade500],
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -666,79 +666,92 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Orders Count Header
-            if (!loading && orders.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.all(16),
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.history_rounded,
-                          color: Colors.green.shade700,
-                          size: 20,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.green.shade50,
+              Colors.green.shade100,
+              Colors.green.shade200,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Orders Count Header
+              if (!loading && orders.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.green.shade100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.history_rounded,
+                            color: Colors.green.shade700,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            "Order History",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Order History",
-                          style: TextStyle(
-                            fontSize: 16,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.green.shade400,
+                              Colors.green.shade500,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "${orders.length} Orders",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade800,
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
                       ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.green.shade400,
-                            Colors.blue.shade400,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        "${orders.length} Orders",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 8),
+
+              // Orders List
+              Expanded(
+                child: loading
+                    ? _loadingState()
+                    : orders.isEmpty
+                    ? _emptyState()
+                    : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 20),
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) {
+                    return _buildOrderCard(orders[index]);
+                  },
                 ),
               ),
-            const SizedBox(height: 8),
-
-            // Orders List
-            Expanded(
-              child: loading
-                  ? _loadingState()
-                  : orders.isEmpty
-                  ? _emptyState()
-                  : ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 20),
-                itemCount: orders.length,
-                itemBuilder: (context, index) {
-                  return _buildOrderCard(orders[index]);
-                },
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
