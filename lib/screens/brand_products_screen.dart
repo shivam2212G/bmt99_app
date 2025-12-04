@@ -41,39 +41,43 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
     setState(() => loading = false);
   }
 
-  // Shimmer effect for products grid
+  // Shimmer effect for products grid (UPDATED to match actual product card)
   Widget _buildProductGridShimmer() {
+    final bool isLargeScreen = MediaQuery.of(context).size.width > 600;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
-        childAspectRatio: 0.75,
+        crossAxisCount: isLargeScreen ? 3 : 2,
+        childAspectRatio: isLargeScreen ? 0.7 : 0.75,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
+        mainAxisExtent: isLargeScreen ? 280 : 250,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: 6,
       itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image shimmer
-              Shimmer(
-                child: Container(
-                  height: 130,
+        return Shimmer(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+              border: Border.all(color: Colors.grey.shade100, width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Image section
+                Container(
+                  height: isLargeScreen ? 160 : 130,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade300,
@@ -82,71 +86,65 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Shimmer(
-                            child: Container(
-                              height: 14,
+
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 16,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Shimmer(
-                            child: Container(
-                              height: 12,
+                            const SizedBox(height: 8),
+                            Container(
+                              height: 14,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 20,
                               width: 80,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade300,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Shimmer(
-                            child: Container(
-                              height: 16,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Shimmer(
-                            child: Container(
-                              height: 36,
+                            const SizedBox(height: 6),
+                            Container(
+                              height: 35,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
