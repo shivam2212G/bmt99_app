@@ -1094,8 +1094,14 @@ class CartScreenState extends State<CartScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // color: Colors.white,
-        color: Colors.green.shade200,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.green.shade100,
+            Colors.green.shade200,
+          ],
+        ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),

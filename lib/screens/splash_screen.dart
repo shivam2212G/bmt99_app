@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen>
         //   builder: (_) => const MainNavigation(initialIndex: 0),
         // ),
         MaterialPageRoute(
-          builder: (_) => const MainNavigation(),
+          builder: (_) => const MainNavigation(initialIndex: 0),
         ),
       );
     } else {

@@ -55,11 +55,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     if (success) {
       Navigator.pushReplacement(
         context,
-        // MaterialPageRoute(
-        //   builder: (_) => const MainNavigation(initialIndex: 0),
-        // ),
         MaterialPageRoute(
-          builder: (_) => const MainNavigation(),
+          builder: (_) => const MainNavigation(initialIndex: 0),
         ),
       );
     } else {
