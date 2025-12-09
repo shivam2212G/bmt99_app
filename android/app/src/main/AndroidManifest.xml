@@ -2,6 +2,8 @@
     package="com.example.bmt99_app">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 
     <application
         android:label="bmt99_app"
@@ -35,7 +37,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-
+        <meta-data
+            android:name="onesignal_app_id"
+            android:value="87fde30c-338e-497a-aa8a-5f2a6772b3d9" />
 
 
     </application>

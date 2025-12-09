@@ -49,98 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     loadUserData();
     loadWishlist();
-  }
-
-  Future<String?> fetchPrivacyPolicy() async {
-    final url = Uri.parse("${ApiConfig.baseUrl}/api/settings");
-
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return data["privacy_policy"];
-      } else {
-        return "Unable to load privacy policy.";
-      }
-    } catch (e) {
-      return "Error loading privacy policy.";
-    }
-  }
-
-  void showPrivacyPolicyDialog(String policyText) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.white, Colors.green.shade100],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.privacy_tip_rounded,
-                  color: Colors.green,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                "Privacy Policy",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          content: Container(
-            height: 400,
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Text(
-                policyText,
-                style: const TextStyle(fontSize: 14, height: 1.5),
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey.shade600,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green.shade600,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 1,
-                shadowColor: Colors.green.shade200,
-              ),
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
+    loadSettings();
   }
 
   Future<void> loadWishlist() async {
@@ -172,6 +81,391 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isLoading = false;
     });
   }
+
+
+  Map<String, dynamic>? settingsData;
+  bool loadingSettings = true;
+
+  Future<void> loadSettings() async {
+    final url = "${ApiConfig.baseUrl}/api/settings";
+
+    print("Loading settings from: $url");
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      print("Status code: ${response.statusCode}");
+      print("Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        settingsData = jsonDecode(response.body);
+        print("Settings loaded: $settingsData");
+      } else {
+        print("Failed to load settings");
+      }
+    } catch (e) {
+      print("Error loading settings: $e");
+    }
+
+    setState(() => loadingSettings = false);
+  }
+
+  void showPolicyPopup({
+    required BuildContext context,
+    required String title,
+    required String content,
+    required String updatedAt,
+    required String email,
+    String? phone,
+    String? address,
+  }) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white,
+                  Colors.green.shade50,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.withOpacity(0.2),
+                  blurRadius: 25,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with green gradient
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.green.shade800,
+                        Colors.green.shade600,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.verified_user_rounded,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Content Area
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Content with green border
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.green.shade100,
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            content,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              height: 1.6,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Contact Info Card with green theme
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.green.shade100,
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.contact_page_outlined,
+                                    color: Colors.green.shade700,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "Contact Information",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.green.shade800,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+
+                              // Updated At
+                              _buildContactItem(
+                                Icons.update_rounded,
+                                "Last Updated",
+                                updatedAt,
+                                Colors.orange.shade700,
+                              ),
+                              const SizedBox(height: 10),
+
+                              // Email
+                              _buildContactItem(
+                                Icons.email_rounded,
+                                "Email",
+                                email,
+                                Colors.green.shade700,
+                              ),
+                              const SizedBox(height: 10),
+
+                              // Phone (if available)
+                              if (phone != null)
+                                Column(
+                                  children: [
+                                    _buildContactItem(
+                                      Icons.phone_rounded,
+                                      "Phone",
+                                      phone,
+                                      Colors.green.shade600,
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+
+                              // Address (if available)
+                              if (address != null)
+                                _buildContactItem(
+                                  Icons.location_on_rounded,
+                                  "Address",
+                                  address,
+                                  Colors.green.shade800,
+                                ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Footer Note with green theme
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.green.shade200,
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.shield_outlined,
+                                color: Colors.green.shade700,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  "Your privacy is protected with bank-level security. We never share your data without consent.",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.green.shade800,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Actions Footer with green buttons
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Row(
+                    children: [
+                      // Learn More Button (green outline)
+                      // Expanded(
+                      //   child: OutlinedButton.icon(
+                      //     onPressed: () {
+                      //       // Add functionality for viewing full policy
+                      //       Navigator.pop(context);
+                      //     },
+                      //     style: OutlinedButton.styleFrom(
+                      //       foregroundColor: Colors.green.shade700,
+                      //       padding: const EdgeInsets.symmetric(vertical: 14),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(12),
+                      //       ),
+                      //       side: BorderSide(
+                      //         color: Colors.green.shade400,
+                      //         width: 1.5,
+                      //       ),
+                      //     ),
+                      //     icon: Icon(
+                      //       Icons.description_outlined,
+                      //       size: 18,
+                      //       color: Colors.green.shade700,
+                      //     ),
+                      //     label: Text(
+                      //       "View Full Policy",
+                      //       style: TextStyle(
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Colors.green.shade700,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 12),
+
+                      // OK Button (green solid)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade700,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 2,
+                            shadowColor: Colors.green.shade200,
+                          ),
+                          icon: const Icon(Icons.check_circle_outline_rounded,
+                              size: 18),
+                          label: const Text(
+                            "Accept & Continue",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildContactItem(IconData icon, String label, String value, Color color) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 16,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Future<void> logout() async {
     showDialog(
@@ -850,6 +1144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
+
                         const Divider(height: 1, indent: 20, endIndent: 20),
                         _buildOptionItem(
                           icon: Icons.settings_outlined,
@@ -869,30 +1164,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
+
                         const Divider(height: 1, indent: 20, endIndent: 20),
+
                         _buildOptionItem(
                           icon: Icons.privacy_tip_outlined,
                           title: "Privacy Policy",
-                          subtitle: "Read our privacy policy",
-                          color: Colors.deepOrange.shade600,
-                          onTap: () async {
-                            showDialog(
+                          subtitle: "View our privacy details",
+                          color: Colors.green.shade600,
+                          onTap: () {
+                            print("hello1");
+                            if (settingsData == null) return;
+                            print("hello2");
+                            showPolicyPopup(
                               context: context,
-                              barrierDismissible: false,
-                              builder: (_) => Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.green.shade600,
-                                ),
-                              ),
+                              title: "Privacy Policy",
+                              content: settingsData!["privacy_policy"] ?? "",
+                              updatedAt: settingsData!["updated_at"] ?? "",
+                              email: settingsData!["shop_email"] ?? "",
+                              phone: null,
+                              address: null,
                             );
-
-                            String? policy = await fetchPrivacyPolicy();
-
-                            if (mounted) Navigator.pop(context); // close loader
-
-                            showPrivacyPolicyDialog(policy ?? "No content available.");
                           },
                         ),
+
+                        Divider(height: 1, indent: 20, endIndent: 20),
+
+                        _buildOptionItem(
+                          icon: Icons.info_outline,
+                          title: "Disclaimer",
+                          subtitle: "Read our disclaimer",
+                          color: Colors.orange.shade600,
+                          onTap: () {
+                            if (settingsData == null) return;
+                            showPolicyPopup(
+                              context: context,
+                              title: "Disclaimer",
+                              content: settingsData!["discamer"] ?? "",
+                              updatedAt: settingsData!["updated_at"] ?? "",
+                              email: settingsData!["shop_email"] ?? "",
+                              phone: settingsData!["shop_phone"] ?? "",
+                              address: settingsData!["shop_address"] ?? "",
+                            );
+                          },
+                        ),
+
+                        Divider(height: 1, indent: 20, endIndent: 20),
+                        _buildOptionItem(
+                          icon: Icons.description_outlined,
+                          title: "Terms & Conditions",
+                          subtitle: "Read terms of use",
+                          color: Colors.blue.shade600,
+                          onTap: () {
+                            if (settingsData == null) return;
+                            showPolicyPopup(
+                              context: context,
+                              title: "Terms & Conditions",
+                              content: settingsData!["terms_conditions"] ?? "",
+                              updatedAt: settingsData!["updated_at"] ?? "",
+                              email: settingsData!["shop_email"] ?? "",
+                              phone: settingsData!["shop_phone"] ?? "",
+                              address: settingsData!["shop_address"] ?? "",
+                            );
+                          },
+                        ),
+
                       ],
                     ),
                   ),
