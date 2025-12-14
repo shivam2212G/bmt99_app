@@ -50,7 +50,7 @@ class _MainNavigationState extends State<MainNavigation> {
         index: _currentIndex,
         children: [
           const HomeScreen(),
-          const CategoryScreen(),
+          const CategoriesScreen(),
           const NewProducts(),
           CartScreen(key: cartKey), // ⭐ Reload only this one
           FutureBuilder(

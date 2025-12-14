@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:bmt99_app/model/feature_brand_model.dart';
+import 'package:bmt99_app/screens/category_productscreen.dart';
 import 'package:bmt99_app/screens/category_screen.dart';
 import 'package:bmt99_app/screens/new_products.dart';
 import 'package:bmt99_app/screens/cart_screen.dart';
@@ -888,11 +889,12 @@ class _HomeScreenState extends State<HomeScreen> {
           final cat = categories[index];
           return GestureDetector(
             onTap: () {
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) =>
-                      CategoryScreen(selectedCategoryId: cat.categoryId),
+                  CategoryProductsScreen(category: cat)
                 ),
               );
             },
