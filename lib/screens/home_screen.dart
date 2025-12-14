@@ -9,6 +9,7 @@ import 'package:bmt99_app/screens/profile_screen.dart';
 import 'package:bmt99_app/services/slider_service.dart';
 import 'package:bmt99_app/model/slider_model.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:iconsax/iconsax.dart';
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    getPlayerId();
     loadUserData();
     loadSliders();
     loadCategories();
@@ -58,6 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
     loadBestOffers();
     loadLessInStock();
   }
+
+  void getPlayerId() {
+    String? playerId = OneSignal.User.pushSubscription.id;
+    print("Player ID: $playerId");
+  }
+
 
   Future<void> loadUserData() async {
     final prefs = await SharedPreferences.getInstance();

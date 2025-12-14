@@ -1,10 +1,19 @@
 import 'package:bmt99_app/screens/home_screen.dart';
 import 'package:bmt99_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize OneSignal
+  OneSignal.initialize("87fde30c-338e-497a-aa8a-5f2a6772b3d9");
+
+  // Ask permission (Android 13+ & iOS)
+  OneSignal.Notifications.requestPermission(true);
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

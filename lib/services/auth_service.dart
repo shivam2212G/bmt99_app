@@ -1,5 +1,6 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,8 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
     // 👇 Use your WEB CLIENT ID here
-    serverClientId: '403760480648-15tn8e24rvk35ef03gqps3gqiukb3rie.apps.googleusercontent.com',
+    serverClientId:
+        '403760480648-15tn8e24rvk35ef03gqps3gqiukb3rie.apps.googleusercontent.com',
   );
 
   Future<bool> signInWithGoogle() async {
@@ -24,10 +26,23 @@ class AuthService {
       if (googleAuth?.idToken == null) return false;
 
       // 4️⃣ Send the token to your Laravel API endpoint
+
+      // Get OneSignal player ID
+      String? playerId = OneSignal.User.pushSubscription.id;
+
+      if (playerId == null) {
+        await Future.delayed(Duration(seconds: 2));
+        playerId = OneSignal.User.pushSubscription.id;
+      }
+      print("New Payer Id::::::${playerId}");
+
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/api/google-login'),
         headers: {'Accept': 'application/json'},
-        body: {'id_token': googleAuth!.idToken}, // 👈 PUT HERE
+        body: {
+          'id_token': googleAuth!.idToken,
+          'player_id': playerId,
+        }, // 👈 PUT HERE
       );
 
       // print(response);
