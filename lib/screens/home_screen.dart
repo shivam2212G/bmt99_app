@@ -656,116 +656,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBrandsShimmer() {
-    return Column(
-      children: [
-        // First row shimmer (4 items)
-        _buildBrandRowShimmer(3),
-
-        // Second row shimmer (4 items)
-        const SizedBox(height: 16),
-        _buildBrandRowShimmer(3),
-
-        // Remaining items horizontal scroll shimmer
-        const SizedBox(height: 24),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Shimmer(
-            child: Container(
-              width: 100,
-              height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 80,
-                margin: const EdgeInsets.only(right: 12),
-                child: Column(
-                  children: [
-                    Shimmer(
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Shimmer(
-                      child: Container(
-                        width: 50,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-// Helper method to build a row of shimmer items
-  Widget _buildBrandRowShimmer(int itemCount) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(itemCount, (index) {
-          return Container(
-            width: 80,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            child: Column(
-              children: [
-                Shimmer(
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Shimmer(
-                  child: Container(
-                    width: 50,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
   // Shimmer effect for products grid (UPDATED to match actual product card)
   Widget _buildProductGridShimmer() {
     final bool isLargeScreen = MediaQuery.of(context).size.width > 600;
@@ -965,56 +855,65 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // OLD UI: Brands horizontal list
-  Widget _buildBrandsList() {
-    // Split brands into chunks
-    List<List<FeatureBrandModel>> brandChunks = [];
-    for (int i = 0; i < brands.length; i += 3) {
-      int end = (i + 3 < brands.length) ? i + 3 : brands.length;
-      brandChunks.add(brands.sublist(i, end));
-    }
 
-    return Column(
-      children: [
-        // First row (first 4 brands)
-        if (brandChunks.isNotEmpty && brandChunks[0].isNotEmpty)
-          _buildBrandRow(brandChunks[0], 0),
-
-        // Second row (next 4 brands)
-        if (brandChunks.length > 1 && brandChunks[1].isNotEmpty)
-          _buildBrandRow(brandChunks[1], 1),
-
-        // Remaining brands in horizontal scroll
-        if (brandChunks.length > 2)
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: brands.length > 8 ? brands.length - 8 : 0,
-              itemBuilder: (context, index) {
-                final brand = brands[index + 8];
-                return _buildBrandItem(brand);
-              },
+  Widget _buildBrandsShimmer() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: 6, // Show 6 shimmer items
+        itemBuilder: (context, index) {
+          return Container(
+            width: 80,
+            margin: const EdgeInsets.only(right: 12),
+            child: Column(
+              children: [
+                Shimmer(
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Shimmer(
+                  child: Container(
+                    width: 50,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-      ],
-    );
-  }
-
-// Helper method to build a row of 4 brands
-  Widget _buildBrandRow(List<FeatureBrandModel> rowBrands, int rowIndex) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: rowBrands.asMap().entries.map((entry) {
-          final brand = entry.value;
-          return _buildBrandItem(brand);
-        }).toList(),
+          );
+        },
       ),
     );
   }
+
+  // OLD UI: Brands horizontal list
+  Widget _buildBrandsList() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: brands.length,
+        itemBuilder: (context, index) {
+          final brand = brands[index];
+          return _buildBrandItem(brand);
+        },
+      ),
+    );
+  }
+
 
 // Helper method to build individual brand item
   Widget _buildBrandItem(FeatureBrandModel brand) {
@@ -1253,7 +1152,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(right: 12, left: 4),
             child: IconButton(
               icon: Icon(
-                Icons.person_outline_rounded,
+                Icons.search_rounded,
                 size: 22,
                 color: Colors.white.withOpacity(0.95),
               ),
@@ -1579,15 +1478,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: InkWell(
                               onTap: (){
                                 print("Hello");
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const MainNavigation(initialIndex: 1),
-                                  ),
-                                );
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (_) => const MainNavigation(initialIndex: 1),
+                                //   ),
+                                // );
                               },
                               child: Text(
-                                "${categories.length} View All",
+                                "${categories.length} Categories",
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
@@ -1602,102 +1501,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       categories.isEmpty
                           ? _buildCategoriesShimmer()
                           : _buildCategoriesList(),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // ---------- FEATURED BRANDS (OLD UI) ----------
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade100,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.business_rounded,
-                                color: Colors.green.shade700,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "Featured Brands",
-                                style: TextStyle(
-                                  fontSize: isLargeScreen ? 20 : 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade800,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.green.shade400,
-                                  Colors.green.shade500,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              "${brands.length} Brands",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      loadingBrands
-                          ? _buildBrandsShimmer()
-                          : brands.isEmpty
-                          ? Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.business_outlined,
-                              size: 60,
-                              color: Colors.grey.shade300,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              "No brands available",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade500,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                          : _buildBrandsList(),
                     ],
                   ),
                 ),
@@ -1953,7 +1756,103 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 20),
+
+                // ---------- FEATURED BRANDS (OLD UI) ----------
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.business_rounded,
+                                color: Colors.green.shade700,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                "Featured Brands",
+                                style: TextStyle(
+                                  fontSize: isLargeScreen ? 20 : 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade800,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.green.shade400,
+                                  Colors.green.shade500,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              "${brands.length} Brands",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      loadingBrands
+                          ? _buildBrandsShimmer()
+                          : brands.isEmpty
+                          ? Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.business_outlined,
+                              size: 60,
+                              color: Colors.grey.shade300,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              "No brands available",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey.shade500,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                          : _buildBrandsList(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10,),
               ],
             ),
           ),

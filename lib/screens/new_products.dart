@@ -373,7 +373,6 @@ class _NewProductsState extends State<NewProducts> {
                   ),
               ],
             ),
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
@@ -550,6 +549,9 @@ class _NewProductsState extends State<NewProducts> {
     final double gridCrossAxisCount = isLargeScreen ? 3 : 2;
     final double productAspectRatio = isLargeScreen ? 0.7 : 0.75;
 
+    // Determine the title based on filter state
+    final String sectionTitle = _hasActiveFilters() ? "Filter Products" : "New Products";
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -656,11 +658,13 @@ class _NewProductsState extends State<NewProducts> {
             padding: const EdgeInsets.only(right: 12, left: 4),
             child: IconButton(
               icon: Icon(
-                Icons.search_rounded,
+                Icons.person_outline_rounded,
                 size: 22,
                 color: Colors.white.withOpacity(0.95),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),
@@ -1008,13 +1012,16 @@ class _NewProductsState extends State<NewProducts> {
                             Row(
                               children: [
                                 Icon(
-                                  Icons.new_releases_outlined,
+                                  // Change icon based on filter state
+                                  _hasActiveFilters()
+                                      ? Icons.filter_alt_outlined
+                                      : Icons.new_releases_outlined,
                                   color: Colors.green.shade700,
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  loadingProducts ? "Loading Products" : "New Products",
+                                  loadingProducts ? "Loading Products" : sectionTitle,
                                   style: TextStyle(
                                     fontSize: isLargeScreen ? 20 : 18,
                                     fontWeight: FontWeight.bold,
@@ -1069,7 +1076,9 @@ class _NewProductsState extends State<NewProducts> {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                "No products found",
+                                _hasActiveFilters()
+                                    ? "No products match your filters"
+                                    : "No products found",
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.grey.shade500,
@@ -1078,7 +1087,9 @@ class _NewProductsState extends State<NewProducts> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                "Try adjusting your filters",
+                                _hasActiveFilters()
+                                    ? "Try adjusting your search criteria"
+                                    : "Try adjusting your filters",
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.grey.shade400,

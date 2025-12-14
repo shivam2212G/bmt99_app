@@ -291,7 +291,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    "shop by category",
+                    "Shop by category",
                     style: TextStyle(
                       fontSize: 11,
                       color: Colors.white.withOpacity(0.9),
@@ -346,7 +346,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             padding: const EdgeInsets.only(right: 12, left: 4),
             child: IconButton(
               icon: Icon(
-                Icons.person_outline_rounded,
+                Icons.search_rounded,
                 size: 22,
                 color: Colors.white.withOpacity(0.95),
               ),
