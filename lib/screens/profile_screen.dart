@@ -148,271 +148,274 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Header with green gradient
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.green.shade800,
-                        Colors.green.shade600,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.verified_user_rounded,
-                          color: Colors.white,
-                          size: 24,
-                        ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with green gradient
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.green.shade800,
+                          Colors.green.shade600,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            letterSpacing: 0.3,
-                          ),
-                        ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
-                    ],
-                  ),
-                ),
-
-                // Content Area
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    child: Row(
                       children: [
-                        // Content with green border
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          width: 48,
+                          height: 48,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.green.shade100,
-                              width: 1,
-                            ),
+                            color: Colors.white.withOpacity(0.15),
+                            shape: BoxShape.circle,
                           ),
+                          child: const Icon(
+                            Icons.verified_user_rounded,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
                           child: Text(
-                            content,
+                            title,
                             style: const TextStyle(
-                              fontSize: 14,
-                              height: 1.6,
-                              color: Colors.black87,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
 
-                        const SizedBox(height: 20),
-
-                        // Contact Info Card with green theme
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.green.shade100,
-                              width: 1,
+                  // Content Area
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Content with green border
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.green.shade100,
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              content,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                height: 1.6,
+                                color: Colors.black87,
+                              ),
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.contact_page_outlined,
-                                    color: Colors.green.shade700,
-                                    size: 20,
+
+                          const SizedBox(height: 20),
+
+                          // Contact Info Card with green theme
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.green.shade100,
+                                width: 1,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.contact_page_outlined,
+                                      color: Colors.green.shade700,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "Contact Information",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.green.shade800,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+
+                                // Updated At
+                                _buildContactItem(
+                                  Icons.update_rounded,
+                                  "Last Updated",
+                                  updatedAt,
+                                  Colors.orange.shade700,
+                                ),
+                                const SizedBox(height: 10),
+
+                                // Email
+                                _buildContactItem(
+                                  Icons.email_rounded,
+                                  "Email",
+                                  email,
+                                  Colors.green.shade700,
+                                ),
+                                const SizedBox(height: 10),
+
+                                // Phone (if available)
+                                if (phone != null)
+                                  Column(
+                                    children: [
+                                      _buildContactItem(
+                                        Icons.phone_rounded,
+                                        "Phone",
+                                        phone,
+                                        Colors.green.shade600,
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
                                   ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    "Contact Information",
+
+                                // Address (if available)
+                                if (address != null)
+                                  _buildContactItem(
+                                    Icons.location_on_rounded,
+                                    "Address",
+                                    address,
+                                    Colors.green.shade800,
+                                  ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Footer Note with green theme
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.green.shade200,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.shield_outlined,
+                                  color: Colors.green.shade700,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    "Your privacy is protected with bank-level security. We never share your data without consent.",
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
                                       color: Colors.green.shade800,
                                     ),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-
-                              // Updated At
-                              _buildContactItem(
-                                Icons.update_rounded,
-                                "Last Updated",
-                                updatedAt,
-                                Colors.orange.shade700,
-                              ),
-                              const SizedBox(height: 10),
-
-                              // Email
-                              _buildContactItem(
-                                Icons.email_rounded,
-                                "Email",
-                                email,
-                                Colors.green.shade700,
-                              ),
-                              const SizedBox(height: 10),
-
-                              // Phone (if available)
-                              if (phone != null)
-                                Column(
-                                  children: [
-                                    _buildContactItem(
-                                      Icons.phone_rounded,
-                                      "Phone",
-                                      phone,
-                                      Colors.green.shade600,
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
                                 ),
-
-                              // Address (if available)
-                              if (address != null)
-                                _buildContactItem(
-                                  Icons.location_on_rounded,
-                                  "Address",
-                                  address,
-                                  Colors.green.shade800,
-                                ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        // Footer Note with green theme
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Colors.green.shade200,
-                              width: 1,
+                              ],
                             ),
                           ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.shield_outlined,
-                                color: Colors.green.shade700,
-                                size: 18,
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Actions Footer with green buttons
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: Row(
+                      children: [
+                        // Learn More Button (green outline)
+                        // Expanded(
+                        //   child: OutlinedButton.icon(
+                        //     onPressed: () {
+                        //       // Add functionality for viewing full policy
+                        //       Navigator.pop(context);
+                        //     },
+                        //     style: OutlinedButton.styleFrom(
+                        //       foregroundColor: Colors.green.shade700,
+                        //       padding: const EdgeInsets.symmetric(vertical: 14),
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(12),
+                        //       ),
+                        //       side: BorderSide(
+                        //         color: Colors.green.shade400,
+                        //         width: 1.5,
+                        //       ),
+                        //     ),
+                        //     icon: Icon(
+                        //       Icons.description_outlined,
+                        //       size: 18,
+                        //       color: Colors.green.shade700,
+                        //     ),
+                        //     label: Text(
+                        //       "View Full Policy",
+                        //       style: TextStyle(
+                        //         fontWeight: FontWeight.w500,
+                        //         color: Colors.green.shade700,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(width: 12),
+
+                        // OK Button (green solid)
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () => Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green.shade700,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  "Your privacy is protected with bank-level security. We never share your data without consent.",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.green.shade800,
-                                  ),
-                                ),
+                              elevation: 2,
+                              shadowColor: Colors.green.shade200,
+                            ),
+                            icon: const Icon(Icons.check_circle_outline_rounded,
+                                size: 18),
+                            label: const Text(
+                              "Accept & Continue",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-
-                // Actions Footer with green buttons
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  child: Row(
-                    children: [
-                      // Learn More Button (green outline)
-                      // Expanded(
-                      //   child: OutlinedButton.icon(
-                      //     onPressed: () {
-                      //       // Add functionality for viewing full policy
-                      //       Navigator.pop(context);
-                      //     },
-                      //     style: OutlinedButton.styleFrom(
-                      //       foregroundColor: Colors.green.shade700,
-                      //       padding: const EdgeInsets.symmetric(vertical: 14),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(12),
-                      //       ),
-                      //       side: BorderSide(
-                      //         color: Colors.green.shade400,
-                      //         width: 1.5,
-                      //       ),
-                      //     ),
-                      //     icon: Icon(
-                      //       Icons.description_outlined,
-                      //       size: 18,
-                      //       color: Colors.green.shade700,
-                      //     ),
-                      //     label: Text(
-                      //       "View Full Policy",
-                      //       style: TextStyle(
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Colors.green.shade700,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(width: 12),
-
-                      // OK Button (green solid)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade700,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 2,
-                            shadowColor: Colors.green.shade200,
-                          ),
-                          icon: const Icon(Icons.check_circle_outline_rounded,
-                              size: 18),
-                          label: const Text(
-                            "Accept & Continue",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -1051,26 +1054,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        _buildStatItem(
-                          icon: Icons.shopping_bag_rounded,
-                          value: "12",
-                          label: "Orders",
-                          color: Colors.blue.shade600,
+                        Expanded(
+                          flex: 2,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MyOrdersScreen(),
+                                ),
+                              );
+                            },
+                            child: _buildStatItem(
+                              icon: Icons.shopping_bag_rounded,
+                              value: "12",
+                              label: "Orders",
+                              color: Colors.blue.shade600,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 8),
-                        _buildStatItem(
-                          icon: Icons.favorite_rounded,
-                          value: wishlistItems.length.toString(),
-                          label: "Wishlist",
-                          color: Colors.red.shade600,
+                        Expanded(
+                          flex: 2,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const WishlistScreen(),
+                                ),
+                              );
+                            },
+                            child: _buildStatItem(
+                              icon: Icons.favorite_rounded,
+                              value: wishlistItems.length.toString(),
+                              label: "Wishlist",
+                              color: Colors.red.shade600,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 8),
-                        _buildStatItem(
-                          icon: Icons.star_rounded,
-                          value: "8",
-                          label: "Reviews",
-                          color: Colors.amber.shade600,
+                        Expanded(
+                          flex: 2,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text("Reviews feature coming soon"),
+                                  backgroundColor: Colors.amber.shade700,
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            },
+                            child: _buildStatItem(
+                              icon: Icons.star_rounded,
+                              value: "8",
+                              label: "Reviews",
+                              color: Colors.amber.shade600,
+                            ),
+                          ),
                         ),
+
                       ],
                     ),
                   ),
@@ -1196,7 +1243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           subtitle: "Read our disclaimer",
                           color: Colors.orange.shade600,
                           onTap: () {
+                            print("hello1");
                             if (settingsData == null) return;
+                            print("hello2");
                             showPolicyPopup(
                               context: context,
                               title: "Disclaimer",
@@ -1228,6 +1277,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
+
+                        const Divider(height: 1, indent: 20, endIndent: 20),
+
+                        // NEW: About Us Option
+                        _buildOptionItem(
+                          icon: Icons.business_rounded,
+                          title: "About Us",
+                          subtitle: "Learn more about our company",
+                          color: Colors.purple.shade600,
+                          onTap: () {
+                            if (settingsData == null) return;
+                            showPolicyPopup(
+                              context: context,
+                              title: "About Us",
+                              content: settingsData!["about_us"] ?? "",
+                              updatedAt: settingsData!["updated_at"] ?? "",
+                              email: settingsData!["shop_email"] ?? "",
+                              phone: settingsData!["shop_phone"] ?? "",
+                              address: settingsData!["shop_address"] ?? "",
+                            );
+                          },
+                        ),
+
+                        const Divider(height: 1, indent: 20, endIndent: 20),
+
+                        // NEW: Refund Policy Option
+                        _buildOptionItem(
+                          icon: Icons.currency_exchange_rounded,
+                          title: "Refund Policy",
+                          subtitle: "Our refund and return policy",
+                          color: Colors.amber.shade700,
+                          onTap: () {
+                            if (settingsData == null) return;
+                            showPolicyPopup(
+                              context: context,
+                              title: "Refund Policy",
+                              content: settingsData!["refund_policy"] ?? "",
+                              updatedAt: settingsData!["updated_at"] ?? "",
+                              email: settingsData!["shop_email"] ?? "",
+                              phone: settingsData!["shop_phone"] ?? "",
+                              address: settingsData!["shop_address"] ?? "",
+                            );
+                          },
+                        ),
+
 
                       ],
                     ),
