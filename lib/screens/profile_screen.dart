@@ -1094,7 +1094,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: _buildStatItem(
                               icon: Icons.favorite_rounded,
-                              value: wishlistItems.length.toString(),
+                              value: "${wishlistItems.length}",
                               label: "Wishlist",
                               color: Colors.red.shade600,
                             ),

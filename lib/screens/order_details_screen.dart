@@ -738,10 +738,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ],
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildCancelButton(),
+                      ],
+                    )
 
-                    _buildCancelButton(),
-
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
                   ],
                 ),
               ),
