@@ -253,7 +253,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(34),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -263,7 +263,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ],
               ),
                 child: ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(12),
+                  borderRadius: BorderRadiusGeometry.circular(34),
                   child: Image.asset(
                     fit: BoxFit.fitHeight,
                     'assets/shoplogo.png',

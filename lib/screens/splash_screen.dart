@@ -167,7 +167,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   Colors.green.shade600,
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(25),
+                              borderRadius: BorderRadius.circular(60),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.green.shade800.withOpacity(0.3),
@@ -178,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen>
                               ],
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadiusGeometry.circular(30),
+                              borderRadius: BorderRadiusGeometry.circular(60),
                               child: Image.asset(
                                 fit: BoxFit.fitHeight,
                                 'assets/shoplogo.png',

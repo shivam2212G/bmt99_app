@@ -488,7 +488,7 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(34),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -498,7 +498,7 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(12),
+                borderRadius: BorderRadiusGeometry.circular(34),
                 child: Image.asset(
                   fit: BoxFit.fitHeight,
                   'assets/shoplogo.png',

@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   Colors.green.shade600,
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(25),
+                              borderRadius: BorderRadius.circular(60),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.green.shade800.withOpacity(0.3),
@@ -155,10 +155,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Icons.shopping_basket,
-                              size: 60,
-                              color: Colors.white,
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(60),
+                              child: Image.asset(
+                                fit: BoxFit.fitHeight,
+                                'assets/shoplogo.png',
+                                width: 60,
+                                height: 60,
+                              ),
                             ),
                           ),
 
