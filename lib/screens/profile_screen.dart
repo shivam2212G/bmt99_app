@@ -740,10 +740,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.person_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -755,7 +759,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "PROFILE",
+                    "Profile",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -818,18 +822,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           // Search icon
-          Padding(
-            padding: const EdgeInsets.only(right: 12, left: 4),
-            child: IconButton(
-              icon: Icon(
-                Icons.search_rounded,
-                size: 22,
-                color: Colors.white.withOpacity(0.95),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 12, left: 4),
+          //   child: IconButton(
+          //     icon: Icon(
+          //       Icons.search_rounded,
+          //       size: 22,
+          //       color: Colors.white.withOpacity(0.95),
+          //     ),
+          //     onPressed: () {},
+          //     padding: const EdgeInsets.all(8),
+          //   ),
+          // ),
         ],
       ),
       body: Container(

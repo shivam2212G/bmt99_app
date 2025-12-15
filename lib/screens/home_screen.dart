@@ -1070,10 +1070,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.shopping_cart_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -1156,7 +1160,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 22,
                 color: Colors.white.withOpacity(0.95),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MainNavigation(initialIndex: 2),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

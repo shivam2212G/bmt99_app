@@ -574,10 +574,14 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.receipt_long_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -589,7 +593,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "MY ORDERS",
+                    "My Orders",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -631,40 +635,40 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
         toolbarHeight: 70,
-        actions: [
-          // Notification icon
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: IconButton(
-              icon: Badge(
-                label: Text('${orders.length}'),
-                backgroundColor: Colors.red.shade400,
-                textColor: Colors.white,
-                smallSize: 18,
-                child: Icon(
-                  Iconsax.notification,
-                  size: 22,
-                  color: Colors.white.withOpacity(0.95),
-                ),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
-          // Search icon
-          Padding(
-            padding: const EdgeInsets.only(right: 12, left: 4),
-            child: IconButton(
-              icon: Icon(
-                Icons.search_rounded,
-                size: 22,
-                color: Colors.white.withOpacity(0.95),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
-        ],
+        // actions: [
+        //   // Notification icon
+        //   Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 4),
+        //     child: IconButton(
+        //       icon: Badge(
+        //         label: Text('${orders.length}'),
+        //         backgroundColor: Colors.red.shade400,
+        //         textColor: Colors.white,
+        //         smallSize: 18,
+        //         child: Icon(
+        //           Iconsax.notification,
+        //           size: 22,
+        //           color: Colors.white.withOpacity(0.95),
+        //         ),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        //   // Search icon
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 12, left: 4),
+        //     child: IconButton(
+        //       icon: Icon(
+        //         Icons.search_rounded,
+        //         size: 22,
+        //         color: Colors.white.withOpacity(0.95),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        // ],
       ),
       body: Container(
         decoration: BoxDecoration(

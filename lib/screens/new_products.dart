@@ -576,10 +576,14 @@ class _NewProductsState extends State<NewProducts> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.new_releases_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -591,7 +595,7 @@ class _NewProductsState extends State<NewProducts> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "NEW PRODUCTS",
+                    "New Products",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -653,21 +657,21 @@ class _NewProductsState extends State<NewProducts> {
               padding: const EdgeInsets.all(8),
             ),
           ),
-          // Search icon
-          Padding(
-            padding: const EdgeInsets.only(right: 12, left: 4),
-            child: IconButton(
-              icon: Icon(
-                Icons.person_outline_rounded,
-                size: 22,
-                color: Colors.white.withOpacity(0.95),
-              ),
-              onPressed: () {
 
-              },
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 12, left: 4),
+          //   child: IconButton(
+          //     icon: Icon(
+          //       Icons.person_outline_rounded,
+          //       size: 22,
+          //       color: Colors.white.withOpacity(0.95),
+          //     ),
+          //     onPressed: () {
+          //
+          //     },
+          //     padding: const EdgeInsets.all(8),
+          //   ),
+          // ),
         ],
       ),
       body: Container(

@@ -548,10 +548,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.inventory_2_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -563,7 +567,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "PRODUCT DETAILS",
+                    "Product Details",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,

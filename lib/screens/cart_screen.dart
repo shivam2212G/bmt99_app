@@ -1232,10 +1232,14 @@ class CartScreenState extends State<CartScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.shopping_cart,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -1247,7 +1251,7 @@ class CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "MY CART",
+                    "My Cart",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -1310,18 +1314,18 @@ class CartScreenState extends State<CartScreen> {
             ),
           ),
           // Search icon
-          Padding(
-            padding: const EdgeInsets.only(right: 12, left: 4),
-            child: IconButton(
-              icon: Icon(
-                Icons.search_rounded,
-                size: 22,
-                color: Colors.white.withOpacity(0.95),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 12, left: 4),
+          //   child: IconButton(
+          //     icon: Icon(
+          //       Icons.search_rounded,
+          //       size: 22,
+          //       color: Colors.white.withOpacity(0.95),
+          //     ),
+          //     onPressed: () {},
+          //     padding: const EdgeInsets.all(8),
+          //   ),
+          // ),
         ],
       ),
 

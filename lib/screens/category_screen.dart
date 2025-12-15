@@ -6,6 +6,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../model/category_model.dart';
 import '../services/category_service.dart';
 import '../baseapi.dart';
+import '../widget/MainNavigation.dart';
 import 'category_productscreen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -264,10 +265,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.shopping_cart_rounded,
-                color: Colors.green,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -279,7 +284,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "CATEGORIES",
+                    "Categories",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -350,7 +355,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 size: 22,
                 color: Colors.white.withOpacity(0.95),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MainNavigation(initialIndex: 2),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

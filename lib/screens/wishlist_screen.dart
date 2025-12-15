@@ -650,7 +650,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "MY WISHLIST",
+                    "My Wishlists",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,
@@ -692,40 +692,40 @@ class _WishlistScreenState extends State<WishlistScreen> {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
         toolbarHeight: 70,
-        actions: [
-          // Notification icon
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: IconButton(
-              icon: Badge(
-                label: Text('${wishlistItems.length}'),
-                backgroundColor: Colors.amber.shade600,
-                textColor: Colors.white,
-                smallSize: 18,
-                child: Icon(
-                  Iconsax.notification,
-                  size: 22,
-                  color: Colors.white.withOpacity(0.95),
-                ),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
-          // Search icon
-          Padding(
-            padding: const EdgeInsets.only(right: 12, left: 4),
-            child: IconButton(
-              icon: Icon(
-                Icons.search_rounded,
-                size: 22,
-                color: Colors.white.withOpacity(0.95),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
-        ],
+        // actions: [
+        //   // Notification icon
+        //   Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 4),
+        //     child: IconButton(
+        //       icon: Badge(
+        //         label: Text('${wishlistItems.length}'),
+        //         backgroundColor: Colors.amber.shade600,
+        //         textColor: Colors.white,
+        //         smallSize: 18,
+        //         child: Icon(
+        //           Iconsax.notification,
+        //           size: 22,
+        //           color: Colors.white.withOpacity(0.95),
+        //         ),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        //   // Search icon
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 12, left: 4),
+        //     child: IconButton(
+        //       icon: Icon(
+        //         Icons.search_rounded,
+        //         size: 22,
+        //         color: Colors.white.withOpacity(0.95),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        // ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

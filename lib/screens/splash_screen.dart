@@ -177,10 +177,14 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Icons.shopping_basket,
-                              size: 60,
-                              color: Colors.white,
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(30),
+                              child: Image.asset(
+                                fit: BoxFit.fitHeight,
+                                'assets/shoplogo.png',
+                                width: 60,
+                                height: 60,
+                              ),
                             ),
                           ),
                         ),

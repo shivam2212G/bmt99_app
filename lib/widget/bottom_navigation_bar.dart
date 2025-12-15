@@ -107,7 +107,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               Icon(
                 isActive ? activeIcon : icon,
                 size: 24,
-                color: isActive ? Colors.white : Colors.grey.shade700,
+                color: isActive ? Colors.white : Colors.white,
               ),
               const SizedBox(height: 4),
               Text(
@@ -115,7 +115,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: isActive ? Colors.white : Colors.grey.shade700,
+                  color: isActive ? Colors.white : Colors.white,
                 ),
               ),
             ],

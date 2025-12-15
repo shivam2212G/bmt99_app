@@ -240,7 +240,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         title: Row(
           children: [
             // Logo/Icon
@@ -262,11 +262,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.edit_rounded,
-                color: Colors.green,
-                size: 24,
-              ),
+                child: ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(12),
+                  child: Image.asset(
+                    fit: BoxFit.fitHeight,
+                    'assets/shoplogo.png',
+                    width: 34,
+                    height: 34,
+                  ),
+                ),
             ),
             const SizedBox(width: 12),
 
@@ -277,7 +281,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "EDIT PROFILE",
+                    "Edit Profile",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 18,

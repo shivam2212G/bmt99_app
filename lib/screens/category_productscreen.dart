@@ -481,31 +481,123 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.category.categoryName,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            color: Colors.white,
-          ),
+        // automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            // Logo/Icon
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white, Colors.green.shade100],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  'assets/shoplogo.png',
+                  width: 34,
+                  height: 34,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+
+            // Title
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.category.categoryName}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                      color: Colors.white,
+                      letterSpacing: 0.8,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    "${widget.category.categoryName} All Products",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white.withOpacity(0.9),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.green.shade600, Colors.green.shade800],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Iconsax.shopping_cart),
-            onPressed: () {},
-          ),
-        ],
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+        toolbarHeight: 70,
+        // actions: [
+        //   // Notification icon
+        //   Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 4),
+        //     child: IconButton(
+        //       icon: Badge(
+        //         label: const Text('3'),
+        //         backgroundColor: Colors.red.shade400,
+        //         textColor: Colors.white,
+        //         smallSize: 18,
+        //         child: Icon(
+        //           Iconsax.notification,
+        //           size: 22,
+        //           color: Colors.white.withOpacity(0.95),
+        //         ),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        //   // User icon
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 12, left: 4),
+        //     child: IconButton(
+        //       icon: Icon(
+        //         Icons.search_rounded,
+        //         size: 22,
+        //         color: Colors.white.withOpacity(0.95),
+        //       ),
+        //       onPressed: () {},
+        //       padding: const EdgeInsets.all(8),
+        //     ),
+        //   ),
+        // ],
       ),
       body: Container(
         decoration: BoxDecoration(
