@@ -74,6 +74,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
+              backgroundColor: Colors.green.shade100,
               title: const Row(
                 children: [
                   Icon(Icons.cancel, color: Colors.red),
@@ -485,7 +486,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
 
                     // Cancel Button or Cancelled Status
-                    _buildCancelButton(),
+
 
                     // ---------------- ORDER ITEMS ----------------
                     Container(
@@ -737,6 +738,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ],
                       ),
                     ),
+
+                    _buildCancelButton(),
 
                     const SizedBox(height: 20),
                   ],

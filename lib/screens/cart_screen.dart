@@ -260,7 +260,7 @@ class CartScreenState extends State<CartScreen> {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-                color: Colors.green.shade50
+                color: Colors.green.shade100
               ),
               child: Padding(
                 padding: EdgeInsets.only(
@@ -456,7 +456,7 @@ class CartScreenState extends State<CartScreen> {
                     RadioListTile(
                       value: "online",
                       groupValue: selectedMethod,
-                      title: const Text("Online Payment (Razorpay)"),
+                      title: const Text("Online Payment"),
                       onChanged: (v) =>
                           setModalState(() => selectedMethod = v.toString()),
                     ),
@@ -840,7 +840,7 @@ class CartScreenState extends State<CartScreen> {
           Icon(
             Icons.shopping_cart_outlined,
             size: 80,
-            color: Colors.grey.shade400,
+            color: Colors.white,
           ),
           const SizedBox(height: 16),
           const Text(

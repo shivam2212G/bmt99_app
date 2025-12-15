@@ -474,6 +474,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.green.shade100,
         title: Row(
           children: [
             Container(
@@ -481,7 +482,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 40,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.white, Colors.red.shade100],
+                  colors: [Colors.white, Colors.green.shade100],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
