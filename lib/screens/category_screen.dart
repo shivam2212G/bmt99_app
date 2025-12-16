@@ -327,25 +327,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         ),
         toolbarHeight: 70,
         actions: [
-          // Notification icon
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: IconButton(
-              icon: Badge(
-                label: const Text('3'),
-                backgroundColor: Colors.red.shade400,
-                textColor: Colors.white,
-                smallSize: 18,
-                child: Icon(
-                  Iconsax.notification,
-                  size: 22,
-                  color: Colors.white.withOpacity(0.95),
-                ),
-              ),
-              onPressed: () {},
-              padding: const EdgeInsets.all(8),
-            ),
-          ),
           // User icon
           Padding(
             padding: const EdgeInsets.only(right: 12, left: 4),
@@ -363,6 +344,25 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                 );
               },
+              padding: const EdgeInsets.all(8),
+            ),
+          ),
+          // Notification icon
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: IconButton(
+              icon: Badge(
+                label: const Text('3'),
+                backgroundColor: Colors.red.shade400,
+                textColor: Colors.white,
+                smallSize: 18,
+                child: Icon(
+                  Iconsax.notification,
+                  size: 22,
+                  color: Colors.white.withOpacity(0.95),
+                ),
+              ),
+              onPressed: () {},
               padding: const EdgeInsets.all(8),
             ),
           ),
