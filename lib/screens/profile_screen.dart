@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'package:bmt99_app/screens/wishlist_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../baseapi.dart';
+import '../model/notification_model.dart';
 import '../services/auth_service.dart';
 import '../services/wishlist_service.dart';
 import 'cart_screen.dart';
@@ -16,6 +18,7 @@ import 'login_screen.dart';
 import 'my_orders_screen.dart';
 import 'new_products.dart';
 import 'edit_profile_screen.dart';
+import 'notification_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String? name;
@@ -43,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   List<dynamic> wishlistItems = [];
   bool loadingWishlist = true;
+  late Box<NotificationModel> notificationBox;
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     loadUserData();
     loadWishlist();
     loadSettings();
+    notificationBox = Hive.box<NotificationModel>('notifications');
   }
 
   Future<void> loadWishlist() async {
@@ -808,7 +813,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Badge(
-                label: const Text('2'),
+                label: Text('${notificationBox.length}'),
                 backgroundColor: Colors.red.shade400,
                 textColor: Colors.white,
                 smallSize: 18,
@@ -818,7 +823,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NotificationScreen(),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

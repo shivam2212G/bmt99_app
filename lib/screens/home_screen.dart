@@ -5,11 +5,13 @@ import 'package:bmt99_app/screens/category_productscreen.dart';
 import 'package:bmt99_app/screens/category_screen.dart';
 import 'package:bmt99_app/screens/new_products.dart';
 import 'package:bmt99_app/screens/cart_screen.dart';
+import 'package:bmt99_app/screens/notification_screen.dart';
 import 'package:bmt99_app/screens/product_details_screen.dart';
 import 'package:bmt99_app/screens/profile_screen.dart';
 import 'package:bmt99_app/services/slider_service.dart';
 import 'package:bmt99_app/model/slider_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,6 +19,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../baseapi.dart';
 import '../model/category_model.dart';
+import '../model/notification_model.dart';
 import '../model/product_model.dart';
 import '../services/best_offers_service.dart';
 import '../services/cart_service.dart';
@@ -50,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<FeatureBrandModel> brands = [];
   bool loadingBrands = true;
 
+  late Box<NotificationModel> notificationBox;
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     loadBrands();
     loadBestOffers();
     loadLessInStock();
+    notificationBox = Hive.box<NotificationModel>('notifications');
   }
 
   void getPlayerId() {
@@ -1159,7 +1165,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Badge(
-                label: const Text('3'),
+                label: Text('${notificationBox.length}'),
                 backgroundColor: Colors.red.shade400,
                 textColor: Colors.white,
                 smallSize: 18,
@@ -1169,7 +1175,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NotificationScreen(),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

@@ -1,10 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../baseapi.dart';
+import '../model/notification_model.dart';
 import '../model/product_model.dart';
 import '../model/category_model.dart';
 import '../model/feature_brand_model.dart';
@@ -13,6 +15,7 @@ import '../services/search_service.dart';
 import '../services/cart_service.dart';
 import '../services/category_service.dart';
 import '../services/feature_brand_service.dart';
+import 'notification_screen.dart';
 import 'product_details_screen.dart';
 
 class NewProducts extends StatefulWidget {
@@ -41,11 +44,14 @@ class _NewProductsState extends State<NewProducts> {
   final TextEditingController _minPriceController = TextEditingController();
   final TextEditingController _maxPriceController = TextEditingController();
 
+  late Box<NotificationModel> notificationBox;
+
   @override
   void initState() {
     super.initState();
     _initData();
     loadUserData();
+    notificationBox = Hive.box<NotificationModel>('notifications');
   }
 
   Future<void> _initData() async {
@@ -643,7 +649,7 @@ class _NewProductsState extends State<NewProducts> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Badge(
-                label: const Text('2'),
+                label: Text('${notificationBox.length}'),
                 backgroundColor: Colors.red.shade400,
                 textColor: Colors.white,
                 smallSize: 18,
@@ -653,7 +659,14 @@ class _NewProductsState extends State<NewProducts> {
                   color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NotificationScreen(),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_connect/http/src/multipart/form_data.dart' hide FormData;
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
+import '../model/notification_model.dart';
 import '../services/cart_service.dart';
 import '../baseapi.dart';
 import '../services/payment_service.dart';
 import '../widget/bottom_navigation_bar.dart';
 import '../model/product_model.dart';
+import 'notification_screen.dart';
 import 'order_success_screen.dart';
 import 'product_details_screen.dart';
 import 'package:geolocator/geolocator.dart';
@@ -48,6 +51,8 @@ class CartScreenState extends State<CartScreen> {
 
   late PaymentService paymentService;
 
+  late Box<NotificationModel> notificationBox;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +62,7 @@ class CartScreenState extends State<CartScreen> {
     );
     loadCart();
     loadUserData();
+    notificationBox = Hive.box<NotificationModel>('notifications');
   }
 
   @override
@@ -1299,7 +1305,7 @@ class CartScreenState extends State<CartScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Badge(
-                label: const Text('2'),
+                label: Text('${notificationBox.length}'),
                 backgroundColor: Colors.red.shade400,
                 textColor: Colors.white,
                 smallSize: 18,
@@ -1309,7 +1315,14 @@ class CartScreenState extends State<CartScreen> {
                   color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NotificationScreen(),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),

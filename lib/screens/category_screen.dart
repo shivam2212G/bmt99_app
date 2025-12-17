@@ -1,13 +1,16 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../model/category_model.dart';
+import '../model/notification_model.dart';
 import '../services/category_service.dart';
 import '../baseapi.dart';
 import '../widget/MainNavigation.dart';
 import 'category_productscreen.dart';
+import 'notification_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -21,12 +24,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   List<CategoryModel> categories = [];
   bool loading = true;
 
+  late Box<NotificationModel> notificationBox;
+
   @override
   void initState() {
     super.initState();
     loadCategories();
     loadUserData();
+    notificationBox = Hive.box<NotificationModel>('notifications');
   }
+
+
 
   Future<void> loadCategories() async {
     categories = await CategoryService().fetchCategories();
@@ -352,7 +360,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Badge(
-                label: const Text('3'),
+                label: Text('${notificationBox.length}'),
                 backgroundColor: Colors.red.shade400,
                 textColor: Colors.white,
                 smallSize: 18,
@@ -362,7 +370,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   color: Colors.white.withOpacity(0.95),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NotificationScreen(),
+                  ),
+                );
+              },
               padding: const EdgeInsets.all(8),
             ),
           ),
