@@ -1189,45 +1189,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
-                        const Divider(height: 1, indent: 20, endIndent: 20),
-                        _buildOptionItem(
-                          icon: Icons.notifications_outlined,
-                          title: "Notifications",
-                          subtitle: "Manage your alerts",
-                          color: Colors.purple.shade600,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text("Notifications feature coming soon"),
-                                backgroundColor: Colors.purple.shade600,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        const Divider(height: 1, indent: 20, endIndent: 20),
-                        _buildOptionItem(
-                          icon: Icons.settings_outlined,
-                          title: "Settings",
-                          subtitle: "App preferences",
-                          color: Colors.grey.shade600,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text("Settings feature coming soon"),
-                                backgroundColor: Colors.grey.shade600,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
 
                         const Divider(height: 1, indent: 20, endIndent: 20),
 

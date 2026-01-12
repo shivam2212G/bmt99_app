@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../widget/MainNavigation.dart';
-import 'register_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _RegisterScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
-  bool loading = false;
-  bool _obscurePassword = true;
+  final _formKey = GlobalKey<FormState>();
 
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _confirmPasswordController = TextEditingController();
+
+  bool loading = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -52,62 +56,49 @@ class _LoginScreenState extends State<LoginScreen>
     _controller.forward();
   }
 
-  Future<void> handleGoogleLogin() async {
-    setState(() => loading = true);
-    final success = await AuthService().signInWithGoogle();
-    setState(() => loading = false);
-
-    if (success) {
-      _goHome();
-    } else {
-      _showErrorSnackbar('Google Login Failed');
-    }
-  }
-
-  Future<void> handleEmailLogin() async {
+  Future<void> handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => loading = true);
-    final success = await AuthService().loginWithEmail(
+
+    final success = await AuthService().registerWithEmail(
+      _nameController.text.trim(),
       _emailController.text.trim(),
+      _phoneController.text.trim(),
       _passwordController.text,
     );
+
     setState(() => loading = false);
 
     if (success) {
-      _goHome();
-    } else {
-      _showErrorSnackbar('Invalid email or password');
-    }
-  }
-
-  void _goHome() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const MainNavigation(initialIndex: 0),
-      ),
-    );
-  }
-
-  void _showErrorSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red.shade400,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MainNavigation(initialIndex: 0),
         ),
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Registration failed'),
+          backgroundColor: Colors.red.shade400,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      );
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -197,8 +188,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 child: ClipRRect(
                                   borderRadius: BorderRadiusGeometry.circular(60),
                                   child: Image.asset(
-                                    fit: BoxFit.fitHeight,
                                     'assets/shoplogo.png',
+                                    fit: BoxFit.fitHeight,
                                     width: 60,
                                     height: 60,
                                   ),
@@ -209,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                               // Welcome Text
                               Text(
-                                'Welcome Back to',
+                                'Join',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w300,
@@ -247,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                               // Description Text
                               Text(
-                                'Sign in to access fresh groceries and exclusive offers',
+                                'Create an account to start shopping fresh groceries',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14,
@@ -258,11 +249,102 @@ class _LoginScreenState extends State<LoginScreen>
 
                               const SizedBox(height: 40),
 
-                              /// EMAIL LOGIN FORM
+                              /// REGISTRATION FORM
                               Form(
                                 key: _formKey,
                                 child: Column(
                                   children: [
+                                    // Name Field
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextFormField(
+                                        controller: _nameController,
+                                        validator: (v) =>
+                                        v!.isEmpty ? 'Full name is required' : null,
+                                        decoration: InputDecoration(
+                                          hintText: 'Full Name',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey.shade500,
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.person_outline,
+                                            color: Colors.green.shade600,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.transparent,
+                                          contentPadding: const EdgeInsets.symmetric(
+                                            vertical: 18,
+                                            horizontal: 16,
+                                          ),
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 20),
+
+                                    // Phone Field
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextFormField(
+                                        controller: _phoneController,
+                                        keyboardType: TextInputType.phone,
+                                        validator: (v) =>
+                                        v!.length < 10 ? 'Enter valid phone number' : null,
+                                        decoration: InputDecoration(
+                                          hintText: 'Phone Number',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey.shade500,
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.phone_outlined,
+                                            color: Colors.green.shade600,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.transparent,
+                                          contentPadding: const EdgeInsets.symmetric(
+                                            vertical: 18,
+                                            horizontal: 16,
+                                          ),
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 20),
+
                                     // Email Field
                                     Container(
                                       decoration: BoxDecoration(
@@ -278,10 +360,11 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                                       child: TextFormField(
                                         controller: _emailController,
+                                        keyboardType: TextInputType.emailAddress,
                                         validator: (v) =>
-                                        v!.contains('@') ? null : 'Enter valid email',
+                                        !v!.contains('@') ? 'Enter valid email' : null,
                                         decoration: InputDecoration(
-                                          hintText: 'Email',
+                                          hintText: 'Email Address',
                                           hintStyle: TextStyle(
                                             color: Colors.grey.shade500,
                                           ),
@@ -323,9 +406,8 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                                       child: TextFormField(
                                         controller: _passwordController,
-                                        validator: (v) => v!.length < 6
-                                            ? 'Minimum 6 characters'
-                                            : null,
+                                        validator: (v) =>
+                                        v!.length < 6 ? 'Minimum 6 characters' : null,
                                         obscureText: _obscurePassword,
                                         decoration: InputDecoration(
                                           hintText: 'Password',
@@ -365,13 +447,73 @@ class _LoginScreenState extends State<LoginScreen>
                                         ),
                                       ),
                                     ),
+
+                                    const SizedBox(height: 20),
+
+                                    // Confirm Password Field
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            blurRadius: 10,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextFormField(
+                                        controller: _confirmPasswordController,
+                                        validator: (v) => v != _passwordController.text
+                                            ? 'Passwords do not match'
+                                            : null,
+                                        obscureText: _obscureConfirmPassword,
+                                        decoration: InputDecoration(
+                                          hintText: 'Confirm Password',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey.shade500,
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.green.shade600,
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              _obscureConfirmPassword
+                                                  ? Icons.visibility_off_outlined
+                                                  : Icons.visibility_outlined,
+                                              color: Colors.green.shade600,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                                              });
+                                            },
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.transparent,
+                                          contentPadding: const EdgeInsets.symmetric(
+                                            vertical: 18,
+                                            horizontal: 16,
+                                          ),
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
 
                               const SizedBox(height: 30),
 
-                              /// EMAIL LOGIN BUTTON
+                              /// REGISTER BUTTON
                               if (loading)
                                 Container(
                                   width: double.infinity,
@@ -396,7 +538,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                                       const SizedBox(width: 15),
                                       Text(
-                                        'Signing In...',
+                                        'Creating Account...',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -408,7 +550,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 )
                               else
                                 ElevatedButton(
-                                  onPressed: handleEmailLogin,
+                                  onPressed: handleRegister,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green.shade600,
                                     foregroundColor: Colors.white,
@@ -424,7 +566,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     minimumSize: const Size(double.infinity, 56),
                                   ),
                                   child: const Text(
-                                    'Login',
+                                    'Create Account',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -434,131 +576,9 @@ class _LoginScreenState extends State<LoginScreen>
 
                               const SizedBox(height: 30),
 
-                              /// OR DIVIDER
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey.shade300,
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                                    child: Text(
-                                      'OR',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey.shade300,
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              /// GOOGLE LOGIN BUTTON
-                              ElevatedButton(
-                                onPressed: loading ? null : handleGoogleLogin,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.grey.shade800,
-                                  elevation: 2,
-                                  shadowColor: Colors.black26,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side: BorderSide(
-                                      color: Colors.grey.shade300,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  minimumSize: const Size(double.infinity, 56),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // Google Icon
-                                    Container(
-                                      width: 24,
-                                      height: 24,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadiusGeometry.circular(24),
-                                        child: Image.asset(
-                                          'assets/google.png',
-                                          fit: BoxFit.contain,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Icon(
-                                              Icons.account_circle,
-                                              color: Colors.grey.shade600,
-                                              size: 24,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                    const Text(
-                                      'Continue with Google',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              /// REGISTER LINK
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Don't have an account? ",
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const RegisterScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      'Register',
-                                      style: TextStyle(
-                                        color: Colors.green.shade700,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 40),
-
                               // Additional Info
                               Text(
-                                'By continuing, you agree to our Terms of Service and Privacy Policy',
+                                'By creating an account, you agree to our Terms of Service and Privacy Policy',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 12,

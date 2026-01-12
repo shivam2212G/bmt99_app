@@ -69,6 +69,60 @@ class AuthService {
     return false;
   }
 
+  // 👇 ADD THIS HERE
+  Future<bool> registerWithEmail(String name,String email,String phone,String password,) async {
+    final response = await http.post(
+      Uri.parse('${ApiConfig.baseUrl}/api/register'),
+      headers: {'Accept': 'application/json'},
+      body: {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('app_token', data['token']);
+      prefs.setInt('user_id', data['user']['id']);
+      prefs.setString('name', data['user']['name'] ?? '');
+      prefs.setString('email', data['user']['email'] ?? '');
+      prefs.setString('avatar', data['user']['avatar'] ?? '');
+
+      return true;
+    }
+    return false;
+  }
+
+
+  Future<bool> loginWithEmail(String email, String password) async {
+    final response = await http.post(
+      Uri.parse('${ApiConfig.baseUrl}/api/login'),
+      body: {
+        'email': email,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('app_token', data['token']);
+      prefs.setInt('user_id', data['user']['id']);
+      prefs.setString('name', data['user']['name'] ?? '');
+      prefs.setString('email', data['user']['email'] ?? '');
+      prefs.setString('avatar', data['user']['avatar'] ?? '');
+
+      return true;
+    }
+    return false;
+  }
+
+
   // Sign out method
   Future<void> signOut() async {
     final prefs = await SharedPreferences.getInstance();
