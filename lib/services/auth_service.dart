@@ -129,4 +129,31 @@ class AuthService {
     await _googleSignIn.signOut();
     await prefs.clear();
   }
+
+
+  Future<bool> sendOtp(String email) async {
+    final response = await http.post(
+      Uri.parse('${ApiConfig.baseUrl}/api/forgot-password'),
+      body: {'email': email},
+    );
+    return response.statusCode == 200;
+  }
+
+  Future<bool> resetPassword(
+      String email,
+      String otp,
+      String password,
+      ) async {
+    final response = await http.post(
+      Uri.parse('${ApiConfig.baseUrl}/api/reset-password'),
+      body: {
+        'email': email,
+        'otp': otp,
+        'password': password,
+      },
+    );
+    return response.statusCode == 200;
+  }
+
+
 }
